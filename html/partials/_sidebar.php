@@ -35,6 +35,6 @@
             <div class="user-avatar">Y</div>
             <div><span class="username">ygor</span><small class="role">Admin</small></div>
         </div>
-        <a href="autenticacao.html" class="logout-btn">Sair</a>
+        <a href="../php/logout.php" class="logout-btn">Sair</a>
     </div>
 </aside>

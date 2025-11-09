@@ -20,36 +20,48 @@
                 <p>Sistema de Gerenciamento de Consultas Médicas</p>
             </div>
 
+            <?php
+                if (isset($_GET['erro'])) {
+                    $mensagem = '';
+                    if ($_GET['erro'] == 1) {
+                        $mensagem = 'E-mail ou senha inválidos. Tente novamente.';
+                    } elseif ($_GET['erro'] == 2) {
+                        $mensagem = 'Erro ao cadastrar. Tente novamente.';
+                    }
+                    echo '<p style="color: red; margin-bottom: 1rem;">' . $mensagem . '</p>';
+                }
+            ?>
+
             <div class="tab-container">
                 <button id="loginTab" class="tab active" onclick="toggleMode('login')">Entrar</button>
                 <button id="registerTab" class="tab" onclick="toggleMode('register')">Cadastrar</button>
             </div>
 
             <!-- Login Form -->
-            <form id="loginForm" class="form active">
+            <form id="loginForm" class="form active" action="../php/login.php" method="POST">
                 <label>Email</label>
-                <input type="email" placeholder="Digite seu email" required />
+                <input type="email" name="email" placeholder="Digite seu email" required />
 
                 <label>Senha</label>
-                <input type="password" placeholder="Digite sua senha" required />
+                <input type="password" name="senha" placeholder="Digite sua senha" required />
 
                 <button type="submit" class="submit-btn">Entrar</button>
                 <a href="#" class="forgot">Esqueceu sua senha?</a>
             </form>
 
             <!-- Register Form -->
-            <form id="registerForm" class="form">
+            <form id="registerForm" class="form" action="../php/register.php" method="POST">
                 <label>Nome Completo</label>
-                <input type="text" placeholder="Digite seu nome completo" required />
+                <input type="text" name="nome" placeholder="Digite seu nome completo" required />
 
                 <label>Email</label>
-                <input type="email" placeholder="Digite seu email" required />
+                <input type="email" name="email" placeholder="Digite seu email" required />
 
                 <label>Senha</label>
-                <input type="password" placeholder="Mínimo 6 caracteres" required />
+                <input type="password" name="senha" placeholder="Mínimo 6 caracteres" required />
 
                 <label>Confirmar Senha</label>
-                <input type="password" placeholder="Digite a senha novamente" required />
+                <input type="password" name="confirmar_senha" placeholder="Digite a senha novamente" required />
 
                 <button type="submit" class="submit-btn">Cadastrar</button>
             </form>
