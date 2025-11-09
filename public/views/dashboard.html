@@ -1,35 +1,11 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-require_once "Consulta.php";
-
-$id = $_POST['id'];
-$idMedico = $_POST['idMedico'];
-$idPaciente = $_POST['idPaciente'];
-$inicio = $_POST['inicio'];
-$fim = $_POST['fim'];
-$sala = $_POST['sala'];
-$status = $_POST['status'];
-$motivo = $_POST['motivo'];
-
-$consulta = new Consulta($idMedico, $idPaciente, $inicio, $fim, $status, $sala, $motivo);
-
-try {
-    $consulta->atualizar($id);
-    echo "Consulta atualizada com sucesso.";
-} catch (Exception $e) {
-    echo "Erro ao atualizar consulta: " . $e->getMessage();
-}
-?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MediCare - Dashboard</title>
-    <link rel="stylesheet" href="../css/gerenciamento.css"> 
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="/css/gerenciamento.css"> 
+    <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -37,7 +13,7 @@ try {
     <div class="app-container">
         <aside class="sidebar">
             <div class="logo-section">
-                <a href="dashboard.html" class="logo-text-link">
+                <a href="/views/dashboard.html" class="logo-text-link">
                     <i class="fas fa-notes-medical logo-icon"></i>
                     <div class="logo-text">
                         <span>MediCare</span>
@@ -48,25 +24,25 @@ try {
             <nav class="main-nav">
                 <ul>
                     <li class="nav-item active">
-                        <a href="../html/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="/views/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a href="../html/pacientes.html"><i class="fas fa-user-injured"></i> Pacientes</a>
+                        <a href="/views/pacientes.html"><i class="fas fa-user-injured"></i> Pacientes</a>
                     </li>
                     <li class="nav-item">
-                        <a href="../html/medicos.html"><i class="fas fa-user-md"></i> Médicos</a>
+                        <a href="/views/medicos.html"><i class="fas fa-user-md"></i> Médicos</a>
                     </li>
                     <li class="nav-item">
-                        <a href="../html/consulta.html"><i class="fas fa-calendar-check"></i> Consultas</a>
+                        <a href="/views/consulta.html"><i class="fas fa-calendar-check"></i> Consultas</a>
                     </li>
                     <li class="nav-item">
-                        <a href="../html/pagamento.html"><i class="fas fa-file-invoice-dollar"></i> Pagamentos</a>
+                        <a href="/views/pagamento.html"><i class="fas fa-file-invoice-dollar"></i> Pagamentos</a>
                     </li>
                     <li class="nav-item">
-                        <a href="../html/receitas.html"><i class="fas fa-file-prescription"></i> Receitas</a>
+                        <a href="/views/receitas.html"><i class="fas fa-file-prescription"></i> Receitas</a>
                     </li>
                     <li class="nav-item">
-                        <a href="../html/relatorios.html"><i class="fas fa-chart-line"></i> Relatórios</a>
+                        <a href="/views/relatorios.html"><i class="fas fa-chart-line"></i> Relatórios</a>
                     </li>
                 </ul>
             </nav>
@@ -78,7 +54,7 @@ try {
                         <small class="role">Admin</small>
                     </div>
                 </div>
-                <a href="../html/autenticacao.html" class="logout-btn">Sair</a>
+                <a href="/views/autenticacao.html" class="logout-btn">Sair</a>
             </div>
         </aside>
 
@@ -208,19 +184,19 @@ try {
                             <div class="status-badge confirmed">Sala 3<br>Confirmada</div>
                         </div>
                     </div>
-                    <a href="../html/consulta.html" class="btn-primary full-width">Ver Todas as Consultas</a>
+                    <a href="/views/consulta.html" class="btn-primary full-width">Ver Todas as Consultas</a>
                 </div>
             </section>
 
             <section class="quick-actions-section">
                 <h3><i class="fas fa-bolt"></i> Ações Rápidas</h3>
                 <div class="quick-actions-grid">
-                    <a href="../html/cadastroPaciente.html" class="action-btn full-row">Novo Paciente </a>
-                    <a href="../html/cadastroMedico.html" class="action-btn full-row">Novo Médico </a>
-                    <a href="../html/cadastroConsulta.html" class="action-btn full-row">Nova Consulta </a>
-                    <a href="../html/cadastroReceita.html" class="action-btn full-row">Nova Receita </a>
-                    <a href="../html/cadastroPagamento.html" class="action-btn full-row">Novo Pagamento </a>
-                    <a href="../html/relatorios.html" class="action-btn full-row">Ver Relatórios </a>
+                    <a href="/views/cadastroPaciente.html" class="action-btn full-row">Novo Paciente </a>
+                    <a href="/views/cadastroMedico.html" class="action-btn full-row">Novo Médico </a>
+                    <a href="/views/cadastroConsulta.html" class="action-btn full-row">Nova Consulta </a>
+                    <a href="/views/cadastroReceita.html" class="action-btn full-row">Nova Receita </a>
+                    <a href="/views/cadastroPagamento.html" class="action-btn full-row">Novo Pagamento </a>
+                    <a href="/views/relatorios.html" class="action-btn full-row">Ver Relatórios </a>
                 </div>
             </section>
         </main>

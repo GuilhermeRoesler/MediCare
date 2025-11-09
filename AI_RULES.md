@@ -14,16 +14,25 @@ This document outlines the technical stack and development conventions for the M
 
 ## Development Guidelines
 
-### File Structure
+### Project Structure
 
-*   All user-facing pages must be `.html` files located in the `html/` directory.
-*   All server-side logic must be in `.php` files located in the `php/` directory.
-*   All stylesheets must be `.css` files located in the `css/` directory.
+The project follows a structure that separates concerns into distinct layers:
+
+*   `/public/`: The web server's document root. All publicly accessible files reside here.
+    *   `css/`: Contains all CSS stylesheets.
+    *   `views/`: Contains all user-facing HTML pages.
+*   `/scripts/`: Contains all PHP scripts that handle form submissions and other server-side actions. These are the "Controllers" of the application.
+*   `/src/`: Contains the core application logic, which is not directly accessible from the web.
+    *   `Database/`: Manages the database connection.
+    *   `Models/`: Contains the PHP classes that represent the application's data (e.g., `Paciente`, `Medico`).
+*   `/sql/`: Contains database schema and migration files.
+
+This structure enhances security by keeping sensitive PHP logic outside the public root and improves maintainability by organizing files based on their function.
 
 ### Backend (PHP)
 
-*   **Database Connection**: Always use the `Conexao::getConexao()` static method from `php/Conexao.php` for all database operations. Do not write new connection logic.
-*   **Data Models**: Follow the existing object-oriented pattern. For entities like "Médico" or "Paciente," use or extend the corresponding class in the `php/` directory (e.g., `Medico.php`, `Paciente.php`).
+*   **Database Connection**: Always use the `Conexao::getConexao()` static method from `src/Database/Conexao.php` for all database operations. Do not write new connection logic.
+*   **Data Models**: Follow the existing object-oriented pattern. For entities like "Médico" or "Paciente," use or extend the corresponding class in the `src/Models/` directory (e.g., `Medico.php`, `Paciente.php`).
 *   **Security**: Be mindful of SQL injection. Use prepared statements with placeholders (`?`) for all queries involving user input.
 
 ### Frontend (HTML/CSS/JS)

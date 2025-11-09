@@ -1,5 +1,5 @@
 <?php
-require_once "Conexao.php";
+require_once __DIR__ . "/../Database/Conexao.php";
 class Medico
 {
     private $id;

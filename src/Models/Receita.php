@@ -1,39 +1,43 @@
 <?php
-require_once "Conexao.php";
-
-class Pagamento
+require_once __DIR__ . "/../Database/Conexao.php";
+class Receita
 {
     private $id;
     private $idConsulta;
-    private $valor;
-    private $dataPagamento;
-    private $formaPagamento;
-    private $status;
-
-    public function __construct($idConsulta, $valor, $dataPagamento, $formaPagamento, $status)
+    private $idPaciente;
+    private $medicamento;
+    private $quantidade;
+    private $posologia;
+    private $dataEmissao;
+    private $validade;
+    
+    public function __construct($idConsulta, $idPaciente, $medicamento, $quantidade, $posologia, $dataEmissao, $validade)
     {
         $this->idConsulta = $idConsulta;
-        $this->valor = $valor;
-        $this->dataPagamento = $dataPagamento;
-        $this->formaPagamento = $formaPagamento;
-        $this->status = $status;
+        $this->idPaciente = $idPaciente;
+        $this->medicamento = $medicamento;
+        $this->quantidade = $quantidade;
+        $this->posologia = $posologia;
+        $this->dataEmissao = $dataEmissao;
+        $this->validade = $validade;
+        
     }
 
-    public function registrar()
+    public function emitir()
     {
         $conectar = Conexao::getConexao();
         if (!$conectar) {
             throw new Exception("Não foi possível conectar ao banco de dados.");
         }
 
-        $sql = "INSERT INTO pagamentos (id_consulta, valor, data_pagamento, forma_pagamento, status) 
-        VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO receitas (id_consulta, id_paciente, medicamento, quantidade, posologia, data_emissao, validade) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)";
         $comando = $conectar->prepare($sql);
-        $comando->execute([$this->idConsulta, $this->valor, $this->dataPagamento, $this->formaPagamento, $this->status]);
+        $comando->execute([$this->idConsulta, $this->idPaciente, $this->medicamento, $this->quantidade, $this->posologia, $this->dataEmissao, $this->validade]);
         if ($comando->rowCount() > 0) {
-            return "Pagamento registrado com sucesso.";
+            return "Receita emitida com sucesso.";
         } else {
-            return "Erro ao registrar pagamento.";
+            return "Erro ao emitir receita.";
         }
     }
 
@@ -43,13 +47,13 @@ class Pagamento
         if (!$conectar) {
             throw new Exception("Não foi possível conectar ao banco de dados.");
         }
-        $sql = "DELETE FROM pagamentos WHERE id=?";
+        $sql = "DELETE FROM receitas WHERE id=?";
         $comando = $conectar->prepare($sql);
         $comando->execute([$id]);
         if ($comando->rowCount() > 0) {
-            return "Pagamento excluído com sucesso.";
+            return "Receita excluída com sucesso.";
         } else {
-            return "Erro ao excluir pagamento.";
+            return "Erro ao excluir receita.";
         }
     }
 
@@ -60,10 +64,11 @@ class Pagamento
             throw new Exception("Não foi possível conectar ao banco de dados.");
         }
 
-        $sql = "SELECT * FROM pagamentos";
+        $sql = "SELECT * FROM receitas";
         $comando = $conectar->prepare($sql);
         $comando->execute();
         return $comando->fetchAll(PDO::FETCH_ASSOC);
+
     }
 
     public function buscarPorId($id)
@@ -72,10 +77,11 @@ class Pagamento
         if (!$conectar) {
             throw new Exception("Não foi possível conectar ao banco de dados.");
         }
-        $sql = "SELECT * FROM pagamentos WHERE id=?";
+        $sql = "SELECT * FROM receitas WHERE id=?";
         $comando = $conectar->prepare($sql);
         $comando->execute([$id]);
         return $comando->fetch(PDO::FETCH_ASSOC);
+
     }
 
     public function atualizar($id)
@@ -85,13 +91,13 @@ class Pagamento
             throw new Exception("Não foi possível conectar ao banco de dados.");
         }
 
-        $sql = "UPDATE pagamentos SET id_consulta=?, valor=?, data_pagamento=?, forma_pagamento=?, status=? WHERE id=?";
+        $sql = "UPDATE receitas SET id_consulta=?, id_paciente=?, medicamento =?, quantidade =?, posologia =?,  data_emissao=?, validade=? WHERE id=?";
         $comando = $conectar->prepare($sql);
-        $comando->execute([$this->idConsulta, $this->valor, $this->dataPagamento, $this->formaPagamento, $this->status, $id]);
+        $comando->execute([$this->idConsulta, $this->idPaciente, $this->medicamento, $this->quantidade, $this->posologia, $this->dataEmissao, $this->validade, $id]);
         if ($comando->rowCount() > 0) {
-            return "Pagamento atualizado com sucesso.";
+            return "Receita atualizada com sucesso.";
         } else {
-            return "Erro ao atualizar pagamento.";
+            return "Erro ao atualizar receita.";
         }
     }
 }
