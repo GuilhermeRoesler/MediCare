@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Excluir Receita</title>
-    <link rel="stylesheet" href="../../css/deletar.css">
+    <link rel="stylesheet" href="../css/deletar.css">
 </head>
 <body>
 
@@ -15,11 +15,12 @@
             <p>Informe o ID da Receita</p>
         </div>
 
-        <form class="form active" method="POST" action="../../php/Deletar/deletarReceita.php">
+        <form class="form active" method="POST" action="../php/deletarReceita.php">
             <label for="idReceita">ID:</label>
             <input type="number" id="idReceita" name="id" placeholder="Digite o ID da receita" required>
 
             <button type="submit" class="submit-btn">Excluir</button>
+            <button type="button" class="cancel-btn" onclick="window.location.href='receitas.php'">Cancelar</button>
         </form>
     </div>
 </div>

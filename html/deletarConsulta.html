@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Excluir Consulta</title>
-    <link rel="stylesheet" href="../../css/deletar.css">
+    <link rel="stylesheet" href="../css/deletar.css">
 </head>
 <body>
 
@@ -15,14 +15,14 @@
             <p>Informe o ID da Consulta</p>
         </div>
 
-        <form class="form active" method="POST" action="../../php/Deletar/deletarConsulta.php" onsubmit="return confirmarExclusao()">
+        <form class="form active" method="POST" action="../php/deletarConsulta.php" onsubmit="return confirmarExclusao()">
             <label for="idConsulta">ID:</label>
             <input type="number" id="idConsulta" name="id" placeholder="Digite o ID da consulta" required>
 
             <button type="submit" class="submit-btn">Excluir</button>
 
-            <button type="button" class="submit-btn" 
-                    onclick="window.location.href='../../html/dashboard.html'">
+            <button type="button" class="cancel-btn" 
+                    onclick="window.location.href='consulta.php'">
                 Cancelar
             </button>
         </form>
