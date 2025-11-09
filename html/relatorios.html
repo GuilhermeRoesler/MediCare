@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Relatórios</title>
+    <link rel="stylesheet" href="../css/gerenciamento.css"> 
+    <link rel="stylesheet" href="../css/relatorios.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo-section">
+                <a href="dashboard.html" class="logo-text-link">
+                    <i class="fas fa-notes-medical logo-icon"></i>
+                    <div class="logo-text"><span>MediCare</span><small>Sistema Médico</small></div>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="pacientes.html"><i class="fas fa-user-injured"></i> Pacientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="medicos.html"><i class="fas fa-user-md"></i> Médicos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="consulta.html"><i class="fas fa-calendar-check"></i> Consultas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="pagamento.html"><i class="fas fa-file-invoice-dollar"></i> Pagamentos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="receitas.html"><i class="fas fa-file-prescription"></i> Receitas</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="relatorios.html"><i class="fas fa-chart-line"></i> Relatórios</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-footer">
+                <div class="user-info">
+                    <div class="user-avatar">Y</div>
+                    <div><span class="username">ygor</span><small class="role">Admin</small></div>
+                </div>
+                <a href="../html/autenticacao.html" class="logout-btn">Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                <div class="header-text">
+                    <h1>Painel Administrativo</h1>
+                    <p>Acompanhe métricas e relatórios do sistema</p>
+                </div>
+                <div class="header-profile">
+                    <span class="notification-badge">2</span>
+                    <div class="profile-details">
+                        <div class="profile-avatar yellow">Y</div>
+                        <div class="profile-info"><span>ygor</span><small>Admin</small></div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="management-card reports-card">
+                <div class="management-header">
+                    <div class="title-section">
+                        <h2>Relatórios Gerenciais</h2>
+                        <p>Filtre e visualize os principais indicadores</p>
+                    </div>
+                    <button class="btn-secondary">
+                        <i class="fas fa-download"></i> Exportar Dados
+                    </button>
+                </div>
+                
+                <div class="filter-options">
+                    <select>
+                        <option>Período: Últimos 30 dias</option>
+                        <option>Período: Últimos 7 dias</option>
+                        <option>Período: Mês Atual</option>
+                    </select>
+                    <select>
+                        <option>Médico: Todos</option>
+                        <option>Dr. João Santos</option>
+                        <option>Dra. Ana Lima</option>
+                    </select>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="report-block">
+                        <h4><i class="fas fa-calendar-check"></i> Consultas Agendadas vs. Realizadas</h4>
+                        <div class="chart-placeholder">Gráfico de Linha ou Barras</div>
+                        <p>Taxa de comparecimento: **92%**</p>
+                    </div>
+
+                    <div class="report-block">
+                        <h4><i class="fas fa-file-invoice-dollar"></i> Faturamento por Período</h4>
+                        <div class="chart-placeholder">Gráfico de Barras - Recebimento</div>
+                        <p>Total Recebido: **R$ 89.450**</p>
+                    </div>
+
+                    <div class="report-block">
+                        <h4><i class="fas fa-user-md"></i> Consultas por Especialidade</h4>
+                        <div class="chart-placeholder">Gráfico de Pizza</div>
+                        <p>Cardiologia: 35%, Dermatologia: 25%, Neurologia: 20%</p>
+                    </div>
+
+                    <div class="report-block">
+                        <h4><i class="fas fa-user-injured"></i> Novos Pacientes (Mês)</h4>
+                        <div class="chart-placeholder">Gráfico de Área</div>
+                        <p>Aumento de **+12%** no cadastro de pacientes novos.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
