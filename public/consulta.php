@@ -1,4 +1,16 @@
 <?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: autenticacao.php');
+    exit();
+}
+$nomeUsuario = $_SESSION['usuario_nome'] ?? 'Usuário';
+$primeiraLetra = strtoupper(substr($nomeUsuario, 0, 1));
+
+require_once '../app/Models/Consulta.php';
+$consultaModel = new Consulta(null, null, null, null, null, null, null);
+$consultas = $consultaModel->listar();
+
 $pageTitle = 'Consultas';
 $currentPage = 'consulta';
 $headerTitle = 'Painel Administrativo';
@@ -22,12 +34,6 @@ include 'partials/_sidebar.php';
         </div>
         
         <div class="data-section">
-            <h3>Lista de Consultas</h3>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar por paciente, médico ou sala...">
-            </div>
-
             <div class="table-container">
                 <table class="data-table">
                     <thead>
@@ -36,42 +42,32 @@ include 'partials/_sidebar.php';
                             <th>PACIENTE</th>
                             <th>MÉDICO</th>
                             <th>DATA/HORA INÍCIO</th>
-                            <th>DATA/HORA FIM</th>
                             <th>STATUS</th>
                             <th>SALA</th>
-                            <th>MOTIVO</th>
                             <th>AÇÕES</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td class="main-info">Maria Silva Santos</td>
-                            <td>Dr. João Santos</td>
-                            <td>15/09/2024, 09:30</td>
-                            <td>15/09/2024, 09:30</td>
-                            <td><span class="status-badge confirmed">confirmada</span></td>
-                            <td>Sala 1</td>
-                            <td>Consulta de rotina</td>
-                             <td class="actions">
-                                <a href="atualizarConsulta.php" class="action-icon info-icon"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarConsulta.php" class="action-icon edit-icon"><i class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td class="main-info">João Pedro Costa</td>
-                            <td>Dra. Ana Lima</td>
-                            <td>15/09/2024, 10:30</td>
-                            <td>15/09/2024, 11:00</td>
-                            <td><span class="status-badge agendada">agendada</span></td>
-                            <td>Sala 2</td>
-                            <td>Acompanhamento dermatológico</td>
-                             <td class="actions">
-                                <a href="atualizarConsulta.php" class="action-icon info-icon"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarConsulta.php" class="action-icon edit-icon"><i class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
+                        <?php if (empty($consultas)): ?>
+                            <tr>
+                                <td colspan="7" style="text-align: center;">Nenhuma consulta encontrada.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($consultas as $consulta): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($consulta['id']); ?></td>
+                                    <td class="main-info"><?php echo htmlspecialchars($consulta['paciente_nome']); ?></td>
+                                    <td><?php echo htmlspecialchars($consulta['medico_nome']); ?></td>
+                                    <td><?php echo date('d/m/Y H:i', strtotime($consulta['inicio'])); ?></td>
+                                    <td><span class="status-badge <?php echo htmlspecialchars($consulta['status']); ?>"><?php echo htmlspecialchars($consulta['status']); ?></span></td>
+                                    <td><?php echo htmlspecialchars($consulta['sala']); ?></td>
+                                    <td class="actions">
+                                        <a href="atualizarConsulta.php?id=<?php echo $consulta['id']; ?>" class="action-icon edit-icon" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                        <a href="deletarConsulta.php?id=<?php echo $consulta['id']; ?>" class="action-icon delete-consult-icon" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

@@ -32,8 +32,8 @@
     </nav>
     <div class="user-footer">
         <div class="user-info">
-            <div class="user-avatar">Y</div>
-            <div><span class="username">ygor</span><small class="role">Admin</small></div>
+            <div class="user-avatar"><?php echo $primeiraLetra; ?></div>
+            <div><span class="username"><?php echo htmlspecialchars($nomeUsuario); ?></span><small class="role">Admin</small></div>
         </div>
         <a href="../app/Http/Controllers/authController.php?action=logout" class="logout-btn">Sair</a>
     </div>

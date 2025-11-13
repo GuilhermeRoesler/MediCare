@@ -1,4 +1,17 @@
 <?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: autenticacao.php');
+    exit();
+}
+$nomeUsuario = $_SESSION['usuario_nome'] ?? 'Usuário';
+$primeiraLetra = strtoupper(substr($nomeUsuario, 0, 1));
+
+require_once '../app/Models/Medico.php';
+$medicoModel = new Medico(null, null, null, null, null, null);
+$medicos = $medicoModel->listar();
+$totalMedicos = count($medicos);
+
 $pageTitle = 'Médicos';
 $currentPage = 'medicos';
 $headerTitle = 'Painel Administrativo';
@@ -14,7 +27,7 @@ include 'partials/_sidebar.php';
         <div class="management-header">
             <div class="title-section">
                 <h2>Lista de Médicos</h2>
-                <p>Total de 23 médicos ativos</p>
+                <p>Total de <?php echo $totalMedicos; ?> médicos registrados</p>
             </div>
             <a href="cadastroMedico.php" class="btn-primary new-item-btn">
                 <i class="fas fa-user-plus"></i> Novo Médico
@@ -22,11 +35,6 @@ include 'partials/_sidebar.php';
         </div>
         
         <div class="data-section">
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar por nome, CRM ou especialidade...">
-            </div>
-
             <div class="table-container">
                 <table class="data-table">
                     <thead>
@@ -41,42 +49,26 @@ include 'partials/_sidebar.php';
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td class="main-info">Dr. João Santos</td>
-                            <td>CRM/SP 123456</td>
-                            <td>Cardiologia</td>
-                            <td>(11) 98765-4321</td>
-                            <td><span class="status-badge ativo">Ativo</span></td>
-                             <td class="actions">
-                                <a href="atualizarMedico.php" class="action-icon info-icon"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarMedico.php" class="action-icon edit-icon"><i class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td class="main-info">Dra. Ana Lima</td>
-                            <td>CRM/RJ 654321</td>
-                            <td>Dermatologia</td>
-                            <td>(21) 99876-5432</td>
-                            <td><span class="status-badge ativo">Ativo</span></td>
-                           <td class="actions">
-                                <a href="atualizarMedico.php" class="action-icon info-icon"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarMedico.php" class="action-icon edit-icon"><i class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td class="main-info">Dr. Carlos Rocha</td>
-                            <td>CRM/MG 456789</td>
-                            <td>Neurologia</td>
-                            <td>(31) 97654-3210</td>
-                            <td><span class="status-badge inativo">Inativo</span></td>
-                          <td class="actions">
-                                <a href="atualizarMedico.php" class="action-icon info-icon"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarMedico.php" class="action-icon edit-icon"><i class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
+                        <?php if (empty($medicos)): ?>
+                            <tr>
+                                <td colspan="7" style="text-align: center;">Nenhum médico encontrado.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($medicos as $medico): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($medico['id']); ?></td>
+                                    <td class="main-info"><?php echo htmlspecialchars($medico['nome_completo']); ?></td>
+                                    <td><?php echo htmlspecialchars($medico['crm']); ?></td>
+                                    <td><?php echo htmlspecialchars($medico['especialidade']); ?></td>
+                                    <td><?php echo htmlspecialchars($medico['telefone']); ?></td>
+                                    <td><span class="status-badge <?php echo $medico['status']; ?>"><?php echo htmlspecialchars($medico['status']); ?></span></td>
+                                    <td class="actions">
+                                        <a href="atualizarMedico.php?id=<?php echo $medico['id']; ?>" class="action-icon edit-icon" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                        <a href="deletarMedico.php?id=<?php echo $medico['id']; ?>" class="action-icon delete-consult-icon" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

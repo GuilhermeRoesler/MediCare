@@ -6,9 +6,9 @@
     <div class="header-profile">
         <span class="notification-badge">2</span>
         <div class="profile-details">
-            <div class="profile-avatar">Y</div>
+            <div class="profile-avatar"><?php echo $primeiraLetra; ?></div>
             <div class="profile-info">
-                <span>ygor</span>
+                <span><?php echo htmlspecialchars($nomeUsuario); ?></span>
                 <small>Admin</small>
             </div>
         </div>

@@ -1,4 +1,23 @@
 <?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: autenticacao.php');
+    exit();
+}
+$nomeUsuario = $_SESSION['usuario_nome'] ?? 'Usuário';
+$primeiraLetra = strtoupper(substr($nomeUsuario, 0, 1));
+
+require_once '../app/Models/Receita.php';
+require_once '../app/Core/Conexao.php';
+
+$receitaModel = new Receita(null, null, null, null, null, null, null);
+$receitas = $receitaModel->listar();
+
+$pdo = Conexao::getConexao();
+$totalReceitas = count($receitas);
+$receitasVencendo = $pdo->query("SELECT COUNT(*) FROM receitas WHERE validade BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)")->fetchColumn();
+$receitasVencidas = $pdo->query("SELECT COUNT(*) FROM receitas WHERE validade < CURDATE()")->fetchColumn();
+
 $pageTitle = 'Receitas';
 $currentPage = 'receitas';
 $headerTitle = 'Painel Administrativo';
@@ -25,81 +44,63 @@ include 'partials/_sidebar.php';
             <div class="summary-card">
                 <div class="card-content">
                     <h4>Total de Receitas</h4>
-                    <span class="summary-value primary">2</span>
+                    <span class="summary-value primary"><?php echo $totalReceitas; ?></span>
                 </div>
                 <div class="card-icon blue"><i class="fas fa-file-alt"></i></div>
             </div>
             <div class="summary-card">
                 <div class="card-content">
                     <h4>Vencendo em 7 dias</h4>
-                    <span class="summary-value pending">0</span>
+                    <span class="summary-value pending"><?php echo $receitasVencendo; ?></span>
                 </div>
                 <div class="card-icon yellow"><i class="fas fa-exclamation-triangle"></i></div>
             </div>
             <div class="summary-card">
                 <div class="card-content">
                     <h4>Vencidas</h4>
-                    <span class="summary-value error">2</span>
+                    <span class="summary-value error"><?php echo $receitasVencidas; ?></span>
                 </div>
                 <div class="card-icon red"><i class="fas fa-times-circle"></i></div>
             </div>
         </div>
 
         <div class="data-section">
-            <h3>Lista de Receitas</h3>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar por paciente, médico ou medi...">
-            </div>
-
             <div class="table-container">
                 <table class="data-table">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>CONSULTA</th>
                             <th>PACIENTE</th>
                             <th>MÉDICO</th>
                             <th>MEDICAMENTO</th>
-                            <th>DATA EMISSÃO</th>
+                            <th>EMISSÃO</th>
                             <th>VALIDADE</th>
                             <th>STATUS</th>
                             <th>AÇÕES</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>#1</td>
-                            <td class="main-info">Maria Silva Santos</td>
-                            <td>Dr. João Santos</td>
-                            <td>Losartana 50mg</td>
-                            <td>14/09/2024</td>
-                            <td>14/12/2024</td>
-                            <td><span class="status-badge vencida">Vencida</span></td>
-                            <td class="actions">
-                                <a href="atualizarReceita.php" class="action-icon info-icon"><i
-                                        class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarReceita.php" class="action-icon edit-icon"><i
-                                        class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>#2</td>
-                            <td class="main-info">João Pedro Costa</td>
-                            <td>Dra. Ana Lima</td>
-                            <td>Protetor Solar FPS 60</td>
-                            <td>14/09/2024</td>
-                            <td>14/10/2024</td>
-                            <td><span class="status-badge vencida">Vencida</span></td>
-                            <td class="actions">
-                                <a href="atualizarPagamento.php" class="action-icon info-icon"><i
-                                        class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarReceita.php" class="action-icon edit-icon"><i
-                                        class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
+                        <?php if (empty($receitas)): ?>
+                            <tr>
+                                <td colspan="8" style="text-align: center;">Nenhuma receita encontrada.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($receitas as $receita): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($receita['id']); ?></td>
+                                    <td class="main-info"><?php echo htmlspecialchars($receita['paciente_nome']); ?></td>
+                                    <td><?php echo htmlspecialchars($receita['medico_nome']); ?></td>
+                                    <td><?php echo htmlspecialchars($receita['medicamento']); ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($receita['data_emissao'])); ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($receita['validade'])); ?></td>
+                                    <td><span class="status-badge <?php echo $receita['status'] === 'Vencida' ? 'vencida' : 'ativo'; ?>"><?php echo htmlspecialchars($receita['status']); ?></span></td>
+                                    <td class="actions">
+                                        <a href="atualizarReceita.php?id=<?php echo $receita['id']; ?>" class="action-icon edit-icon" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                        <a href="deletarReceita.php?id=<?php echo $receita['id']; ?>" class="action-icon delete-consult-icon" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

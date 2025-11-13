@@ -73,7 +73,9 @@ class Medico
         if (!$conectar) {
             throw new Exception("Não foi possível conectar ao banco de dados.");
         }
-        $sql = "SELECT * FROM medicos";
+        $sql = "SELECT * FROM medicos ORDER BY nome_completo ASC";
+        $comando = $conectar->query($sql);
+        return $comando->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function atualizar($id)
@@ -91,4 +93,3 @@ class Medico
         $comando->execute([$this->nomeCompleto, $this->crm, $this->telefone, $this->especialidade, $this->email, $this->status, $id]);
     }
 }
-?>

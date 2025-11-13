@@ -1,4 +1,23 @@
 <?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: autenticacao.php');
+    exit();
+}
+$nomeUsuario = $_SESSION['usuario_nome'] ?? 'Usuário';
+$primeiraLetra = strtoupper(substr($nomeUsuario, 0, 1));
+
+require_once '../app/Models/Pagamento.php';
+require_once '../app/Core/Conexao.php';
+
+$pagamentoModel = new Pagamento(null, null, null, null, null);
+$pagamentos = $pagamentoModel->listar();
+
+$pdo = Conexao::getConexao();
+$totalRecebido = $pdo->query("SELECT SUM(valor) FROM pagamentos WHERE status = 'pago'")->fetchColumn();
+$totalPendente = $pdo->query("SELECT SUM(valor) FROM pagamentos WHERE status = 'pendente'")->fetchColumn();
+$totalPagamentos = count($pagamentos);
+
 $pageTitle = 'Pagamentos';
 $currentPage = 'pagamento';
 $headerTitle = 'Painel Administrativo';
@@ -25,33 +44,27 @@ include 'partials/_sidebar.php';
             <div class="summary-card">
                 <div class="card-content">
                     <h4>Total Recebido</h4>
-                    <span class="summary-value success">R$ 150.00</span>
+                    <span class="summary-value success">R$ <?php echo number_format($totalRecebido ?? 0, 2, ',', '.'); ?></span>
                 </div>
                 <div class="card-icon green"><i class="fas fa-money-bill-wave"></i></div>
             </div>
             <div class="summary-card">
                 <div class="card-content">
                     <h4>Total Pendente</h4>
-                    <span class="summary-value pending">R$ 200.00</span>
+                    <span class="summary-value pending">R$ <?php echo number_format($totalPendente ?? 0, 2, ',', '.'); ?></span>
                 </div>
                 <div class="card-icon yellow"><i class="fas fa-wallet"></i></div>
             </div>
             <div class="summary-card">
                 <div class="card-content">
                     <h4>Total de Pagamentos</h4>
-                    <span class="summary-value primary">2</span>
+                    <span class="summary-value primary"><?php echo $totalPagamentos; ?></span>
                 </div>
                 <div class="card-icon blue"><i class="fas fa-receipt"></i></div>
             </div>
         </div>
 
         <div class="data-section">
-            <h3>Lista de Pagamentos</h3>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar por paciente, médico ou forma...">
-            </div>
-
             <div class="table-container">
                 <table class="data-table">
                     <thead>
@@ -61,41 +74,35 @@ include 'partials/_sidebar.php';
                             <th>PACIENTE</th>
                             <th>MÉDICO</th>
                             <th>VALOR</th>
-                            <th>DATA PAGAMENTO</th>
-                            <th>FORMA PAGAMENTO</th>
+                            <th>DATA</th>
+                            <th>FORMA</th>
                             <th>STATUS</th> 
                             <th>AÇÕES</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>#1</td>
-                            <td class="main-info">Maria Silva Santos</td>
-                            <td>Dr. João Santos</td>
-                            <td>R$ 150.00</td>
-                            <td>14/09/2024</td>
-                            <td>Cartão</td>
-                            <td><span class="status-badge pago">pago</span></td>
-                            <td class="actions">
-                                <a href="atualizarPagamento.php" class="action-icon info-icon"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarPagamento.php" class="action-icon edit-icon"><i class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>#2</td>
-                            <td class="main-info">João Pedro Costa</td>
-                            <td>Dra. Ana Lima</td>
-                            <td>R$ 200.00</td>
-                            <td>14/09/2024</td>
-                            <td>PIX</td>
-                            <td><span class="status-badge pendente">pendente</span></td>
-                           <td class="actions">
-                                <a href="atualizarPagamento.php" class="action-icon info-icon"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarPagamento.php" class="action-icon edit-icon"><i class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
+                        <?php if (empty($pagamentos)): ?>
+                            <tr>
+                                <td colspan="9" style="text-align: center;">Nenhum pagamento encontrado.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($pagamentos as $pagamento): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($pagamento['id']); ?></td>
+                                    <td>#<?php echo htmlspecialchars($pagamento['id_consulta']); ?></td>
+                                    <td class="main-info"><?php echo htmlspecialchars($pagamento['paciente_nome']); ?></td>
+                                    <td><?php echo htmlspecialchars($pagamento['medico_nome']); ?></td>
+                                    <td>R$ <?php echo number_format($pagamento['valor'], 2, ',', '.'); ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($pagamento['data_pagamento'])); ?></td>
+                                    <td><?php echo htmlspecialchars($pagamento['forma_pagamento']); ?></td>
+                                    <td><span class="status-badge <?php echo htmlspecialchars($pagamento['status']); ?>"><?php echo htmlspecialchars($pagamento['status']); ?></span></td>
+                                    <td class="actions">
+                                        <a href="atualizarPagamento.php?id=<?php echo $pagamento['id']; ?>" class="action-icon edit-icon" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                        <a href="deletarPagamento.php?id=<?php echo $pagamento['id']; ?>" class="action-icon delete-consult-icon" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

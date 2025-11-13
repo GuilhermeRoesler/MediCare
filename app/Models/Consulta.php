@@ -62,7 +62,19 @@ class Consulta {
          if (!$conectar) {
             throw new Exception("Não foi possível conectar ao banco de dados.");
         }
-         $sql = "SELECT * FROM consultas";
+         $sql = "SELECT 
+                    c.id, 
+                    p.nome_completo as paciente_nome, 
+                    m.nome_completo as medico_nome, 
+                    c.inicio, 
+                    c.fim, 
+                    c.status, 
+                    c.sala, 
+                    c.motivo 
+                 FROM consultas c
+                 JOIN pacientes p ON c.id_paciente = p.id
+                 JOIN medicos m ON c.id_medico = m.id
+                 ORDER BY c.inicio DESC";
          $comando = $conectar->query($sql);
          return $comando->fetchAll(PDO::FETCH_ASSOC);
      }
@@ -79,4 +91,3 @@ class Consulta {
 
     }
 }
-?>

@@ -1,3 +1,22 @@
+<?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: autenticacao.php');
+    exit();
+}
+require_once '../app/Models/Paciente.php';
+$id = $_GET['id'] ?? null;
+if (!$id) {
+    header('Location: pacientes.php');
+    exit();
+}
+$pacienteModel = new Paciente(null, null, null, null, null);
+$paciente = $pacienteModel->buscarPorId($id);
+if (!$paciente) {
+    header('Location: pacientes.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -16,6 +35,7 @@
     <div class="form-card-container">
 
         <form action="../app/Http/Controllers/pacienteController.php?action=update" method="post" class="form-card">
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($paciente['id']); ?>">
             <div class="form-header">
                 <i class="fas fa-user-edit form-icon"></i>
                 <h2>Atualizar Paciente</h2>
@@ -23,21 +43,13 @@
             </div>
 
             <fieldset class="form-group-grid">
-                <legend>Identificação e Dados Pessoais</legend>
-
-                <div class="form-field">
-                    <label for="id">ID do Paciente</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-hashtag"></i>
-                        <input type="number" id="id" name="id" required placeholder="Ex: 25">
-                    </div>
-                </div>
+                <legend>Dados Pessoais</legend>
 
                 <div class="form-field full-width-field">
                     <label for="nome">Nome Completo</label>
                     <div class="input-with-icon">
                         <i class="fas fa-user"></i>
-                        <input type="text" id="nome" name="nome" required placeholder="Nome e sobrenome do paciente">
+                        <input type="text" id="nome" name="nome" required placeholder="Nome e sobrenome do paciente" value="<?php echo htmlspecialchars($paciente['nome_completo']); ?>">
                     </div>
                 </div>
 
@@ -45,7 +57,7 @@
                     <label for="cpf">CPF</label>
                     <div class="input-with-icon">
                         <i class="fas fa-id-card"></i>
-                        <input type="text" id="cpf" name="cpf" required placeholder="000.000.000-00">
+                        <input type="text" id="cpf" name="cpf" required placeholder="000.000.000-00" value="<?php echo htmlspecialchars($paciente['cpf']); ?>">
                     </div>
                 </div>
 
@@ -53,19 +65,19 @@
                     <label for="dataNascimento">Data de Nascimento</label>
                     <div class="input-with-icon">
                         <i class="fas fa-calendar-alt"></i>
-                        <input type="date" id="dataNascimento" name="dataNascimento" required>
+                        <input type="date" id="dataNascimento" name="dataNascimento" required value="<?php echo htmlspecialchars($paciente['data_nascimento']); ?>">
                     </div>
                 </div>
             </fieldset>
 
             <fieldset class="form-group-grid">
-                <legend>Contato e Endereço</legend>
+                <legend>Contato</legend>
 
                 <div class="form-field">
                     <label for="telefone">Telefone</label>
                     <div class="input-with-icon">
                         <i class="fas fa-phone"></i>
-                        <input type="text" id="telefone" name="telefone" required placeholder="(99) 99999-9999">
+                        <input type="text" id="telefone" name="telefone" required placeholder="(99) 99999-9999" value="<?php echo htmlspecialchars($paciente['telefone']); ?>">
                     </div>
                 </div>
 
@@ -73,15 +85,7 @@
                     <label for="email">E-mail</label>
                     <div class="input-with-icon">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" placeholder="nome@exemplo.com">
-                    </div>
-                </div>
-
-                <div class="form-field full-width-field">
-                    <label for="endereco">Endereço Completo</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <input type="text" id="endereco" name="endereco" placeholder="Rua, Número, Bairro, Cidade - UF">
+                        <input type="email" id="email" name="email" placeholder="nome@exemplo.com" value="<?php echo htmlspecialchars($paciente['email']); ?>">
                     </div>
                 </div>
             </fieldset>
@@ -90,7 +94,7 @@
                 <button type="submit" class="btn-primary">
                     <i class="fas fa-sync-alt"></i> Atualizar Paciente
                 </button>
-                <a href="dashboard.php" class="btn-secondary">Cancelar</a>
+                <a href="pacientes.php" class="btn-secondary">Cancelar</a>
             </div>
         </form>
 

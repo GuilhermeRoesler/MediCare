@@ -1,4 +1,17 @@
 <?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: autenticacao.php');
+    exit();
+}
+$nomeUsuario = $_SESSION['usuario_nome'] ?? 'Usuário';
+$primeiraLetra = strtoupper(substr($nomeUsuario, 0, 1));
+
+require_once '../app/Models/Paciente.php';
+$pacienteModel = new Paciente(null, null, null, null, null);
+$pacientes = $pacienteModel->listar();
+$totalPacientes = count($pacientes);
+
 $pageTitle = 'Pacientes';
 $currentPage = 'pacientes';
 $headerTitle = 'Painel Administrativo';
@@ -14,7 +27,7 @@ include 'partials/_sidebar.php';
         <div class="management-header">
             <div class="title-section">
                 <h2>Lista de Pacientes</h2>
-                <p>Total de 1,247 pacientes registrados</p>
+                <p>Total de <?php echo $totalPacientes; ?> pacientes registrados</p>
             </div>
             <a href="cadastroPaciente.php" class="btn-primary new-item-btn">
                 <i class="fas fa-user-plus"></i> Novo Paciente
@@ -22,11 +35,6 @@ include 'partials/_sidebar.php';
         </div>
         
         <div class="data-section">
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar por nome, CPF ou telefone...">
-            </div>
-
             <div class="table-container">
                 <table class="data-table">
                     <thead>
@@ -36,47 +44,29 @@ include 'partials/_sidebar.php';
                             <th>CPF</th>
                             <th>DATA NASC.</th>
                             <th>TELEFONE</th>
-                            <th>ÚLTIMA CONSULTA</th>
                             <th>AÇÕES</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td class="main-info">Maria Silva Santos</td>
-                            <td>123.456.789-00</td>
-                            <td>10/05/1985</td>
-                            <td>(11) 98765-4321</td>
-                            <td>15/09/2024</td>
-                            <td class="actions">
-                                <a href="atualizarPaciente.php" class="action-icon info-icon"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarPaciente.php" class="action-icon edit-icon"><i class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td class="main-info">João Pedro Costa</td>
-                            <td>987.654.321-11</td>
-                            <td>03/12/2000</td>
-                            <td>(21) 99876-5432</td>
-                            <td>20/08/2024</td>
-                           <td class="actions">
-                                <a href="atualizarPaciente.php" class="action-icon info-icon"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarPaciente.php" class="action-icon edit-icon"><i class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td class="main-info">Ana Oliveira</td>
-                            <td>456.789.012-22</td>
-                            <td>25/01/1992</td>
-                            <td>(31) 97654-3210</td>
-                            <td>01/10/2024</td>
-                             <td class="actions">
-                                <a href="atualizarPaciente.php" class="action-icon info-icon"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="deletarPaciente.php" class="action-icon edit-icon"><i class="fas fa-times"></i></a>
-                            </td>
-                        </tr>
+                        <?php if (empty($pacientes)): ?>
+                            <tr>
+                                <td colspan="6" style="text-align: center;">Nenhum paciente encontrado.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($pacientes as $paciente): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($paciente['id']); ?></td>
+                                    <td class="main-info"><?php echo htmlspecialchars($paciente['nome_completo']); ?></td>
+                                    <td><?php echo htmlspecialchars($paciente['cpf']); ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($paciente['data_nascimento'])); ?></td>
+                                    <td><?php echo htmlspecialchars($paciente['telefone']); ?></td>
+                                    <td class="actions">
+                                        <a href="atualizarPaciente.php?id=<?php echo $paciente['id']; ?>" class="action-icon info-icon" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                        <a href="deletarPaciente.php?id=<?php echo $paciente['id']; ?>" class="action-icon delete-consult-icon" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

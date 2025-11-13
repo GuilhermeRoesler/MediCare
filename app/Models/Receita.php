@@ -64,7 +64,23 @@ class Receita
             throw new Exception("Não foi possível conectar ao banco de dados.");
         }
 
-        $sql = "SELECT * FROM receitas";
+        $sql = "SELECT 
+                    r.id,
+                    r.id_consulta,
+                    p.nome_completo as paciente_nome,
+                    m.nome_completo as medico_nome,
+                    r.medicamento,
+                    r.data_emissao,
+                    r.validade,
+                    CASE 
+                        WHEN r.validade < CURDATE() THEN 'Vencida'
+                        ELSE 'Válida'
+                    END as status
+                FROM receitas r
+                JOIN consultas c ON r.id_consulta = c.id
+                JOIN pacientes p ON c.id_paciente = p.id
+                JOIN medicos m ON c.id_medico = m.id
+                ORDER BY r.data_emissao DESC";
         $comando = $conectar->prepare($sql);
         $comando->execute();
         return $comando->fetchAll(PDO::FETCH_ASSOC);
@@ -101,4 +117,3 @@ class Receita
         }
     }
 }
-?>

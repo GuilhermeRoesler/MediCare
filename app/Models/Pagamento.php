@@ -60,7 +60,20 @@ class Pagamento
             throw new Exception("Não foi possível conectar ao banco de dados.");
         }
 
-        $sql = "SELECT * FROM pagamentos";
+        $sql = "SELECT 
+                    pg.id,
+                    pg.id_consulta,
+                    p.nome_completo as paciente_nome,
+                    m.nome_completo as medico_nome,
+                    pg.valor,
+                    pg.data_pagamento,
+                    pg.forma_pagamento,
+                    pg.status
+                FROM pagamentos pg
+                JOIN consultas c ON pg.id_consulta = c.id
+                JOIN pacientes p ON c.id_paciente = p.id
+                JOIN medicos m ON c.id_medico = m.id
+                ORDER BY pg.data_pagamento DESC";
         $comando = $conectar->prepare($sql);
         $comando->execute();
         return $comando->fetchAll(PDO::FETCH_ASSOC);
@@ -95,4 +108,3 @@ class Pagamento
         }
     }
 }
-?>
