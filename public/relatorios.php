@@ -22,8 +22,8 @@ $mesesPt = ['01' => 'Jan', '02' => 'Fev', '03' => 'Mar', '04' => 'Abr', '05' => 
 // Gráfico 1: Consultas Agendadas vs. Realizadas
 $consultasRealizadasStmt = $pdo->query("
     SELECT DATE_FORMAT(inicio, '%Y-%m') as mes, 
-           SUM(CASE WHEN status = 'finalizada' THEN 1 ELSE 0 END) as realizadas,
-           SUM(CASE WHEN status IN ('agendada', 'confirmada') THEN 1 ELSE 0 END) as agendadas
+           SUM(CASE WHEN status = 'Finalizada' THEN 1 ELSE 0 END) as realizadas,
+           SUM(CASE WHEN status IN ('Agendada', 'Confirmada') THEN 1 ELSE 0 END) as agendadas
     FROM consultas WHERE inicio >= DATE_SUB(NOW(), INTERVAL 6 MONTH) GROUP BY mes ORDER BY mes ASC
 ");
 $consultasRealizadasData = $consultasRealizadasStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -83,9 +83,9 @@ include 'partials/_sidebar.php';
                 <h2>Relatórios Gerenciais</h2>
                 <p>Filtre e visualize os principais indicadores</p>
             </div>
-            <button class="btn-secondary">
+            <a href="exportar_relatorio.php" class="btn-secondary">
                 <i class="fas fa-download"></i> Exportar Dados
-            </button>
+            </a>
         </div>
         
         <div class="filter-options">
