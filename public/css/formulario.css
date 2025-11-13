@@ -1,0 +1,155 @@
+/*
+ * Arquivo: formulario.css
+ * Descrição: Estilos para cards de formulário (ideal para modais ou páginas de cadastro).
+ */
+
+/* -------------------- Container e Card do Formulário -------------------- */
+.form-card-container {
+    /* Configurações para centralizar o formulário na tela (simulando um modal ou uma página de cadastro simples) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    min-height: 100vh; 
+    background-color: var(--background-color); /* Fundo da página */
+}
+
+.form-card {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Sombra mais forte para destaque */
+    width: 100%;
+    max-width: 700px;
+}
+
+/* -------------------- Cabeçalho do Formulário -------------------- */
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.form-header .form-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.form-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+}
+
+.form-header p {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+}
+
+/* -------------------- Agrupamento de Campos (Fieldset) -------------------- */
+fieldset {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+legend {
+    font-weight: 600;
+    color: var(--primary-color);
+    padding: 0 10px;
+    margin-left: -5px; /* Ajuste visual */
+}
+
+.form-group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+/* -------------------- Estilo de Input com Ícone -------------------- */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 15px;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    pointer-events: none; /* Garante que o ícone não atrapalhe o clique no input */
+}
+
+.form-field input,
+.form-field select {
+    width: 100%;
+    padding: 12px 15px 12px 40px; /* Padding à esquerda para o ícone */
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    color: var(--text-primary);
+    background-color: #f9fafb; /* Fundo levemente cinza */
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none; /* Para remover o estilo padrão do select em alguns navegadores */
+}
+
+.form-field select {
+    padding-right: 40px; /* Adicionar espaço para a seta do select se necessário */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%22%3E%3Cpath%20fill%3D%22%236b7280%22%20d%3D%22M287%20197.35l-132.4-132.4c-6.1-6.1-16.9-6.1-23%200l-132.4%20132.4c-6.1%206.1-6.1%2016.9%200%2023l11.5%2011.5c6.1%206.1%2016.9%206.1%2023%200l119.9-119.9c6.1-6.1%2016.9-6.1%2023%200l119.9%20119.9c6.1%206.1%2016.9%206.1%2023%200l11.5-11.5c6.1-6.1%206.1-16.9%200-23z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 12px auto;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); /* Sombra de foco azul */
+    outline: none;
+    background-color: var(--card-bg);
+}
+
+.form-field.full-width-field {
+    grid-column: 1 / -1;
+}
+
+
+/* -------------------- Ações (Botões) -------------------- */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+/* Os estilos .btn-primary e .btn-secondary vêm de gerenciamento.css */
+
+.btn-secondary {
+    background-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background-color: #d1d5db;
+}
+
+.btn-primary i, .btn-secondary i {
+    margin-right: 5px;
+}

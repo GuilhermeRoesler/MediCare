@@ -1,0 +1,139 @@
+/* ===== Reset ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: #eef4ff; /* Fundo mais suave */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== Container ===== */
+.auth-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-box {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 35px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border: 2px solid #1d4ed8;
+}
+
+/* ===== Header ===== */
+.auth-header .logo-circle {
+    width: 70px;
+    height: 70px;
+    background: #ef4444; /* vermelho clínico */
+    border-radius: 50%;
+    margin: 0 auto 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-header h1 {
+    font-size: 1.6rem;
+    color: #1d4ed8;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.auth-header p {
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+/* ===== Form ===== */
+.form {
+    margin-top: 1.5rem;
+}
+
+label {
+    display: block;
+    font-size: 0.9rem;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 0.75rem 0.9rem;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    margin-bottom: 1.2rem;
+    transition: all 0.25s ease;
+}
+
+input:focus {
+    border-color: #1d4ed8;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+}
+
+/* ===== Buttons ===== */
+.submit-btn,
+.cancel-btn {
+    width: 100%;
+    padding: 0.85rem;
+    border: none;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 8px;
+    transition: 0.25s ease-in-out;
+}
+
+/* Botão excluir (principal) */
+.submit-btn {
+    background: #1d4ed8;
+    color: #fff;
+}
+
+.submit-btn:hover {
+    background: #1d4ed8;
+}
+
+/* Botão cancelar (secundário) */
+.cancel-btn {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.cancel-btn:hover {
+    background: #d1d5db;
+}
+
+/* ===== Mensagens ===== */
+.message {
+    margin-top: 1rem;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.success {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
