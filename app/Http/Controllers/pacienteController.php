@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../app/Models/Paciente.php';
+require_once __DIR__ . '/../../Models/Paciente.php';
 
 $action = $_GET['action'] ?? '';
 
