@@ -58,18 +58,11 @@
     font-size: 1.2rem;
 }
 
-/* Placeholder para os gráficos */
-.chart-placeholder {
-    height: 150px;
-    background-color: #f1f5f9; /* Cinza claro para simular o gráfico */
-    border-radius: 4px;
+/* Container para os gráficos */
+.chart-container {
+    position: relative;
+    height: 200px;
     margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--secondary-color);
-    font-size: 0.85rem;
-    border: 1px dashed #cbd5e1;
 }
 
 .report-block p {

@@ -88,16 +88,9 @@
     border-bottom: 1px solid var(--border-color);
 }
 
-.placeholder-chart {
+.chart-area {
+    position: relative;
     height: 250px;
-    background-color: #f9fafb;
-    border: 1px dashed var(--border-color);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--secondary-color);
-    font-size: 0.9rem;
 }
 
 /* Ranking Card (Médicos Mais Ativos) */

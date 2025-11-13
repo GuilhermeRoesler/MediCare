@@ -40,6 +40,39 @@ $stmtMedicosAtivos = $pdo->query("
 ");
 $medicosMaisAtivos = $stmtMedicosAtivos->fetchAll(PDO::FETCH_ASSOC);
 
+// --- DADOS PARA GRÁFICOS ---
+
+// Gráfico 1: Consultas por Mês (Últimos 6 meses)
+$consultasMesStmt = $pdo->query("
+    SELECT DATE_FORMAT(inicio, '%Y-%m') as mes, COUNT(id) as total
+    FROM consultas
+    WHERE inicio >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+    GROUP BY mes
+    ORDER BY mes ASC
+");
+$consultasMesData = $consultasMesStmt->fetchAll(PDO::FETCH_ASSOC);
+$meses = [];
+$totaisMes = [];
+$mesesPt = ['01' => 'Jan', '02' => 'Fev', '03' => 'Mar', '04' => 'Abr', '05' => 'Mai', '06' => 'Jun', '07' => 'Jul', '08' => 'Ago', '09' => 'Set', '10' => 'Out', '11' => 'Nov', '12' => 'Dez'];
+foreach ($consultasMesData as $data) {
+    $mesNum = explode('-', $data['mes'])[1];
+    $meses[] = $mesesPt[$mesNum];
+    $totaisMes[] = $data['total'];
+}
+$chart1_labels = json_encode($meses);
+$chart1_data = json_encode($totaisMes);
+
+// Gráfico 2: Consultas por Status
+$consultasStatusStmt = $pdo->query("SELECT status, COUNT(id) as total FROM consultas GROUP BY status");
+$consultasStatusData = $consultasStatusStmt->fetchAll(PDO::FETCH_ASSOC);
+$statusLabels = [];
+$statusTotais = [];
+foreach ($consultasStatusData as $data) {
+    $statusLabels[] = ucfirst($data['status']);
+    $statusTotais[] = $data['total'];
+}
+$chart2_labels = json_encode($statusLabels);
+$chart2_data = json_encode($statusTotais);
 
 $pageTitle = 'Dashboard';
 $currentPage = 'dashboard';
@@ -82,14 +115,14 @@ include 'partials/_sidebar.php';
     <section class="charts-and-ranking-grid">
         <div class="chart-card">
             <h4>Consultas por Mês</h4>
-            <div class="chart-area placeholder-chart">
-                Gráfico de Barras - Consultas Mensais
+            <div class="chart-area">
+                <canvas id="consultasMesChart"></canvas>
             </div>
         </div>
         <div class="chart-card">
-            <h4>Duração Média das Consultas</h4>
-            <div class="chart-area placeholder-chart">
-                Gráfico de Pizza - Duração por Médico
+            <h4>Consultas por Status</h4>
+            <div class="chart-area">
+                <canvas id="consultasStatusChart"></canvas>
             </div>
         </div>
 
@@ -150,5 +183,51 @@ include 'partials/_sidebar.php';
             <a href="relatorios.php" class="action-btn full-row">Ver Relatórios </a>
         </div>
     </section>
+
+    <script>
+        // Gráfico 1: Consultas por Mês (Gráfico de Barras)
+        const ctxMes = document.getElementById('consultasMesChart').getContext('2d');
+        new Chart(ctxMes, {
+            type: 'bar',
+            data: {
+                labels: <?php echo $chart1_labels; ?>,
+                datasets: [{
+                    label: 'Nº de Consultas',
+                    data: <?php echo $chart1_data; ?>,
+                    backgroundColor: 'rgba(37, 99, 235, 0.8)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // Gráfico 2: Consultas por Status (Gráfico de Pizza)
+        const ctxStatus = document.getElementById('consultasStatusChart').getContext('2d');
+        new Chart(ctxStatus, {
+            type: 'doughnut',
+            data: {
+                labels: <?php echo $chart2_labels; ?>,
+                datasets: [{
+                    label: 'Status',
+                    data: <?php echo $chart2_data; ?>,
+                    backgroundColor: ['rgba(245, 158, 11, 0.8)', 'rgba(16, 185, 129, 0.8)', 'rgba(239, 68, 68, 0.8)', 'rgba(107, 114, 128, 0.8)'],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'top' } }
+            }
+        });
+    </script>
 
 <?php include 'partials/_footer.php'; ?>
