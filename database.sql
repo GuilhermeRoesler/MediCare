@@ -1,109 +1,98 @@
--- Exclui as tabelas se elas já existirem para evitar conflitos
-DROP TABLE IF EXISTS `receitas`;
-DROP TABLE IF EXISTS `pagamentos`;
-DROP TABLE IF EXISTS `consultas`;
-DROP TABLE IF EXISTS `pacientes`;
-DROP TABLE IF EXISTS `medicos`;
-DROP TABLE IF EXISTS `usuarios`;
+-- Arquivo: database.sql
+-- Descrição: Script para criação do banco de dados e tabelas do sistema MediCare.
 
--- Tabela de Usuários do Sistema
-CREATE TABLE `usuarios` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `senha` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- --- CRIAÇÃO DO BANCO DE DADOS ---
+CREATE DATABASE IF NOT EXISTS clinica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- Tabela de Pacientes
-CREATE TABLE `pacientes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome_completo` varchar(255) NOT NULL,
-  `data_nascimento` date NOT NULL,
-  `cpf` varchar(14) NOT NULL,
-  `telefone` varchar(20) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cpf` (`cpf`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- Seleciona o banco de dados para usar
+USE clinica;
 
--- Tabela de Médicos
-CREATE TABLE `medicos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome_completo` varchar(255) NOT NULL,
-  `crm` varchar(20) NOT NULL,
-  `telefone` varchar(20) DEFAULT NULL,
-  `especialidade` varchar(100) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `status` enum('ativo','inativo') NOT NULL DEFAULT 'ativo',
-  `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `crm` (`crm`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- --- TABELA DE USUÁRIOS (PARA AUTENTICAÇÃO) ---
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
 
--- Tabela de Consultas
-CREATE TABLE `consultas` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_medico` int(11) NOT NULL,
-  `id_paciente` int(11) NOT NULL,
-  `inicio` datetime NOT NULL,
-  `fim` datetime NOT NULL,
-  `status` enum('agendada','confirmada','cancelada','finalizada') NOT NULL,
-  `sala` varchar(50) DEFAULT NULL,
-  `motivo` text DEFAULT NULL,
-  `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `id_medico` (`id_medico`),
-  KEY `id_paciente` (`id_paciente`),
-  CONSTRAINT `consultas_ibfk_1` FOREIGN KEY (`id_medico`) REFERENCES `medicos` (`id`),
-  CONSTRAINT `consultas_ibfk_2` FOREIGN KEY (`id_paciente`) REFERENCES `pacientes` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- --- TABELA DE PACIENTES ---
+CREATE TABLE IF NOT EXISTS pacientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_completo VARCHAR(255) NOT NULL,
+    data_nascimento DATE NOT NULL,
+    cpf VARCHAR(20) NOT NULL UNIQUE,
+    telefone VARCHAR(25),
+    email VARCHAR(255),
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
 
--- Tabela de Pagamentos
-CREATE TABLE `pagamentos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_consulta` int(11) NOT NULL,
-  `valor` decimal(10,2) NOT NULL,
-  `data_pagamento` date NOT NULL,
-  `forma_pagamento` varchar(50) NOT NULL,
-  `status` enum('pago','pendente','vencido') NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_consulta` (`id_consulta`),
-  CONSTRAINT `pagamentos_ibfk_1` FOREIGN KEY (`id_consulta`) REFERENCES `consultas` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- --- TABELA DE MÉDICOS ---
+CREATE TABLE IF NOT EXISTS medicos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_completo VARCHAR(255) NOT NULL,
+    crm VARCHAR(50) NOT NULL UNIQUE,
+    especialidade VARCHAR(100) NOT NULL,
+    telefone VARCHAR(25),
+    email VARCHAR(255),
+    status ENUM('ativo', 'inativo') DEFAULT 'ativo',
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
 
--- Tabela de Receitas
-CREATE TABLE `receitas` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_consulta` int(11) NOT NULL,
-  `id_paciente` int(11) NOT NULL,
-  `medicamento` varchar(255) NOT NULL,
-  `quantidade` varchar(100) NOT NULL,
-  `posologia` text NOT NULL,
-  `data_emissao` date NOT NULL,
-  `validade` date NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_consulta` (`id_consulta`),
-  KEY `id_paciente` (`id_paciente`),
-  CONSTRAINT `receitas_ibfk_1` FOREIGN KEY (`id_consulta`) REFERENCES `consultas` (`id`),
-  CONSTRAINT `receitas_ibfk_2` FOREIGN KEY (`id_paciente`) REFERENCES `pacientes` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- --- TABELA DE CONSULTAS ---
+CREATE TABLE IF NOT EXISTS consultas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_medico INT NOT NULL,
+    id_paciente INT NOT NULL,
+    inicio DATETIME NOT NULL,
+    fim DATETIME NOT NULL,
+    sala VARCHAR(50),
+    motivo TEXT,
+    status ENUM('agendada', 'confirmada', 'cancelada', 'finalizada') DEFAULT 'agendada',
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (id_medico) REFERENCES medicos(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
 
--- Inserindo dados de exemplo
--- Usuário Padrão (senha: senha123)
-INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`) VALUES
-(1, 'Ygor', 'ygor@medicare.com', '$2y$10$XQ.E9.eZ3.eZ3.eZ3.eZ3.eZ3.eZ3.eZ3.eZ3.eZ3.eZ3.eZ3.eZ3u');
+-- --- TABELA DE PAGAMENTOS ---
+CREATE TABLE IF NOT EXISTS pagamentos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_consulta INT NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL,
+    data_pagamento DATE NOT NULL,
+    forma_pagamento VARCHAR(100),
+    status ENUM('pago', 'pendente', 'cancelado') DEFAULT 'pendente',
+    
+    FOREIGN KEY (id_consulta) REFERENCES consultas(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- --- TABELA DE RECEITAS ---
+CREATE TABLE IF NOT EXISTS receitas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_consulta INT NOT NULL,
+    id_paciente INT NOT NULL,
+    medicamento VARCHAR(255) NOT NULL,
+    quantidade VARCHAR(100),
+    posologia TEXT NOT NULL,
+    data_emissao DATE NOT NULL,
+    validade DATE NOT NULL,
+    
+    FOREIGN KEY (id_consulta) REFERENCES consultas(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+INSERT INTO usuarios (nome, email, senha) VALUES
+('Ygor', 'ygor@medicare.com', '$2y$12$gsCL0mi2W4kCyd.j9TGX/uqThmhcerJDZiM49.oRfRt0f2erv7Hwa');
 
 -- Médicos
-INSERT INTO `medicos` (`id`, `nome_completo`, `crm`, `telefone`, `especialidade`, `email`, `status`) VALUES
+INSERT INTO medicos (id, nome_completo, crm, telefone, especialidade, email, status) VALUES
 (1, 'Dr. João da Silva Santos', 'CRM/SP 123456', '(11) 98765-4321', 'Cardiologia', 'joao.santos@medicare.com', 'ativo'),
 (2, 'Dra. Ana Clara Lima', 'CRM/RJ 654321', '(21) 99876-5432', 'Dermatologia', 'ana.lima@medicare.com', 'ativo'),
 (3, 'Dr. Carlos Alberto Rocha', 'CRM/MG 456789', '(31) 97654-3210', 'Neurologia', 'carlos.rocha@medicare.com', 'inativo');
 
 -- Pacientes
-INSERT INTO `pacientes` (`id`, `nome_completo`, `data_nascimento`, `cpf`, `telefone`, `email`) VALUES
+INSERT INTO pacientes (id, nome_completo, data_nascimento, cpf, telefone, email) VALUES
 (1, 'Maria Silva Santos', '1985-05-10', '123.456.789-00', '(11) 98765-4321', 'maria.santos@email.com'),
 (2, 'João Pedro Costa', '2000-12-03', '987.654.321-11', '(21) 99876-5432', 'joao.costa@email.com'),
 (3, 'Ana Beatriz Oliveira', '1992-01-25', '456.789.012-22', '(31) 97654-3210', 'ana.oliveira@email.com'),
@@ -111,7 +100,7 @@ INSERT INTO `pacientes` (`id`, `nome_completo`, `data_nascimento`, `cpf`, `telef
 (5, 'Juliana Almeida Ribeiro', '1988-03-30', '555.666.777-88', '(51) 98877-6655', 'juliana.ribeiro@email.com');
 
 -- Consultas
-INSERT INTO `consultas` (`id`, `id_medico`, `id_paciente`, `inicio`, `fim`, `status`, `sala`, `motivo`) VALUES
+INSERT INTO consultas (id, id_medico, id_paciente, inicio, fim, status, sala, motivo) VALUES
 (1, 1, 1, '2024-10-15 09:30:00', '2024-10-15 10:00:00', 'finalizada', 'Sala 1', 'Consulta de rotina'),
 (2, 2, 2, '2024-10-15 10:30:00', '2024-10-15 11:00:00', 'finalizada', 'Sala 2', 'Acompanhamento dermatológico'),
 (3, 1, 3, '2024-11-20 14:00:00', '2024-11-20 14:30:00', 'confirmada', 'Sala 1', 'Avaliação pré-operatória'),
@@ -119,12 +108,14 @@ INSERT INTO `consultas` (`id`, `id_medico`, `id_paciente`, `inicio`, `fim`, `sta
 (5, 1, 5, '2024-11-25 16:00:00', '2024-11-25 16:30:00', 'cancelada', 'Sala 1', 'Retorno');
 
 -- Pagamentos
-INSERT INTO `pagamentos` (`id`, `id_consulta`, `valor`, `data_pagamento`, `forma_pagamento`, `status`) VALUES
+INSERT INTO pagamentos (id, id_consulta, valor, data_pagamento, forma_pagamento, status) VALUES
 (1, 1, 250.00, '2024-10-15', 'Cartão', 'pago'),
 (2, 2, 300.00, '2024-10-15', 'PIX', 'pago'),
 (3, 3, 250.00, '2024-11-20', 'Dinheiro', 'pendente');
 
 -- Receitas
-INSERT INTO `receitas` (`id`, `id_consulta`, `id_paciente`, `medicamento`, `quantidade`, `posologia`, `data_emissao`, `validade`) VALUES
-(1, 1, 1, 'Losartana 50mg', '1 caixa', '1 comprimido ao dia por 30 dias', '2024-10-15', '2025-01-15'),
+INSERT INTO receitas (id, id_consulta, id_paciente, medicamento, quantidade, posologia, data_emissao, validade) VALUES
+(1, 1, 1, 'Losartana 50mg', '1 caixa', '1 comprimido ao dia por 30 dias', '2024-10-15', '2024-10-25'),
 (2, 2, 2, 'Protetor Solar FPS 60', '1 frasco', 'Aplicar no rosto pela manhã', '2024-10-15', '2025-10-15');
+
+SELECT * FROM usuarios;
