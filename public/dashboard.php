@@ -43,24 +43,27 @@ $medicosMaisAtivos = $stmtMedicosAtivos->fetchAll(PDO::FETCH_ASSOC);
 // --- DADOS PARA GRÁFICOS ---
 
 // Gráfico 1: Consultas por Mês (Últimos 6 meses)
+$meses_periodo = [];
+for ($i = 5; $i >= 0; $i--) {
+    $date = new DateTime("first day of -$i month");
+    $meses_periodo[$date->format('Y-m')] = 0;
+}
 $consultasMesStmt = $pdo->query("
     SELECT DATE_FORMAT(inicio, '%Y-%m') as mes, COUNT(id) as total
     FROM consultas
     WHERE inicio >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
     GROUP BY mes
-    ORDER BY mes ASC
 ");
-$consultasMesData = $consultasMesStmt->fetchAll(PDO::FETCH_ASSOC);
-$meses = [];
-$totaisMes = [];
+$consultasMesData = $consultasMesStmt->fetchAll(PDO::FETCH_KEY_PAIR);
+$dados_grafico_mes = array_replace($meses_periodo, $consultasMesData);
 $mesesPt = ['01' => 'Jan', '02' => 'Fev', '03' => 'Mar', '04' => 'Abr', '05' => 'Mai', '06' => 'Jun', '07' => 'Jul', '08' => 'Ago', '09' => 'Set', '10' => 'Out', '11' => 'Nov', '12' => 'Dez'];
-foreach ($consultasMesData as $data) {
-    $mesNum = explode('-', $data['mes'])[1];
-    $meses[] = $mesesPt[$mesNum];
-    $totaisMes[] = $data['total'];
+$labels_finais_mes = [];
+foreach (array_keys($dados_grafico_mes) as $mes_ano) {
+    $mes_num = explode('-', $mes_ano)[1];
+    $labels_finais_mes[] = $mesesPt[$mes_num];
 }
-$chart1_labels = json_encode($meses);
-$chart1_data = json_encode($totaisMes);
+$chart1_labels = json_encode($labels_finais_mes);
+$chart1_data = json_encode(array_values($dados_grafico_mes));
 
 // Gráfico 2: Consultas por Status
 $consultasStatusStmt = $pdo->query("SELECT status, COUNT(id) as total FROM consultas GROUP BY status");

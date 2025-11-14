@@ -303,6 +303,28 @@ a {
     background-color: #1d4ed8;
 }
 
+/* -------------------- FILTROS E BUSCA -------------------- */
+.filter-bar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
 /* Tabela Padrão (Usada em Consultas, Pagamentos, Receitas, Pacientes, Médicos) */
 .data-table {
     width: 100%;
@@ -319,6 +341,32 @@ a {
     padding: 12px 15px;
     text-transform: uppercase;
     font-size: 0.75rem;
+    position: relative;
+}
+
+.data-table thead th[style*="cursor: pointer"]:hover {
+    background-color: #f1f5f9;
+}
+
+.data-table thead th[style*="cursor: pointer"]::after {
+    content: ' ';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    border: 4px solid transparent;
+    opacity: 0.3;
+}
+
+.data-table thead th.asc::after {
+    transform: translateY(-70%);
+    border-bottom-color: var(--primary-color);
+    opacity: 1;
+}
+
+.data-table thead th.desc::after {
+    transform: translateY(-30%);
+    border-top-color: var(--primary-color);
+    opacity: 1;
 }
 
 .data-table tbody tr {

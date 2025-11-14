@@ -34,6 +34,10 @@ include 'partials/_sidebar.php';
             </a>
         </div>
         
+        <div class="filter-bar">
+            <input type="text" class="search-input" placeholder="Buscar por nome, CRM, especialidade...">
+        </div>
+
         <div class="data-section">
             <div class="table-container">
                 <table class="data-table">

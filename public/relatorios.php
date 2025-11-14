@@ -19,20 +19,33 @@ $pageStyles = ['relatorios.css'];
 // --- DADOS PARA GRÁFICOS ---
 $mesesPt = ['01' => 'Jan', '02' => 'Fev', '03' => 'Mar', '04' => 'Abr', '05' => 'Mai', '06' => 'Jun', '07' => 'Jul', '08' => 'Ago', '09' => 'Set', '10' => 'Out', '11' => 'Nov', '12' => 'Dez'];
 
+// Preparar array de meses para garantir a continuidade dos dados
+$meses_periodo = [];
+for ($i = 5; $i >= 0; $i--) {
+    $date = new DateTime("first day of -$i month");
+    $meses_periodo[$date->format('Y-m')] = 0;
+}
+$labels_finais_mes = [];
+foreach (array_keys($meses_periodo) as $mes_ano) {
+    $mes_num = explode('-', $mes_ano)[1];
+    $labels_finais_mes[] = $mesesPt[$mes_num];
+}
+
 // Gráfico 1: Consultas Agendadas vs. Realizadas
 $consultasRealizadasStmt = $pdo->query("
     SELECT DATE_FORMAT(inicio, '%Y-%m') as mes, 
-           SUM(CASE WHEN status = 'Finalizada' THEN 1 ELSE 0 END) as realizadas,
-           SUM(CASE WHEN status IN ('Agendada', 'Confirmada') THEN 1 ELSE 0 END) as agendadas
+           SUM(CASE WHEN status = 'finalizada' THEN 1 ELSE 0 END) as realizadas,
+           SUM(CASE WHEN status IN ('agendada', 'confirmada') THEN 1 ELSE 0 END) as agendadas
     FROM consultas WHERE inicio >= DATE_SUB(NOW(), INTERVAL 6 MONTH) GROUP BY mes ORDER BY mes ASC
 ");
 $consultasRealizadasData = $consultasRealizadasStmt->fetchAll(PDO::FETCH_ASSOC);
-$relatorio1_labels = []; $relatorio1_data_realizadas = []; $relatorio1_data_agendadas = [];
+$relatorio1_data_realizadas = $meses_periodo;
+$relatorio1_data_agendadas = $meses_periodo;
 foreach ($consultasRealizadasData as $data) {
-    $mesNum = explode('-', $data['mes'])[1];
-    $relatorio1_labels[] = $mesesPt[$mesNum];
-    $relatorio1_data_realizadas[] = $data['realizadas'];
-    $relatorio1_data_agendadas[] = $data['agendadas'];
+    if (isset($meses_periodo[$data['mes']])) {
+        $relatorio1_data_realizadas[$data['mes']] = (int)$data['realizadas'];
+        $relatorio1_data_agendadas[$data['mes']] = (int)$data['agendadas'];
+    }
 }
 
 // Gráfico 2: Faturamento por Período
@@ -40,13 +53,8 @@ $faturamentoStmt = $pdo->query("
     SELECT DATE_FORMAT(data_pagamento, '%Y-%m') as mes, SUM(valor) as total
     FROM pagamentos WHERE status = 'pago' AND data_pagamento >= DATE_SUB(NOW(), INTERVAL 6 MONTH) GROUP BY mes ORDER BY mes ASC
 ");
-$faturamentoData = $faturamentoStmt->fetchAll(PDO::FETCH_ASSOC);
-$relatorio2_labels = []; $relatorio2_data = [];
-foreach ($faturamentoData as $data) {
-    $mesNum = explode('-', $data['mes'])[1];
-    $relatorio2_labels[] = $mesesPt[$mesNum];
-    $relatorio2_data[] = $data['total'];
-}
+$faturamentoData = $faturamentoStmt->fetchAll(PDO::FETCH_KEY_PAIR);
+$relatorio2_data = array_replace($meses_periodo, $faturamentoData);
 
 // Gráfico 3: Consultas por Especialidade
 $especialidadeStmt = $pdo->query("
@@ -59,17 +67,12 @@ foreach ($especialidadeData as $data) {
     $relatorio3_data[] = $data['total'];
 }
 
-// Gráfico 4: Novos Pacientes (Mês) - Assumindo que a tabela `pacientes` tem a coluna `criado_em`
+// Gráfico 4: Novos Pacientes (Mês)
 $novosPacientesStmt = $pdo->query("
     SELECT DATE_FORMAT(criado_em, '%Y-%m') as mes, COUNT(id) as total FROM pacientes WHERE criado_em >= DATE_SUB(NOW(), INTERVAL 6 MONTH) GROUP BY mes ORDER BY mes ASC
 ");
-$novosPacientesData = $novosPacientesStmt->fetchAll(PDO::FETCH_ASSOC);
-$relatorio4_labels = []; $relatorio4_data = [];
-foreach ($novosPacientesData as $data) {
-    $mesNum = explode('-', $data['mes'])[1];
-    $relatorio4_labels[] = $mesesPt[$mesNum];
-    $relatorio4_data[] = $data['total'];
-}
+$novosPacientesData = $novosPacientesStmt->fetchAll(PDO::FETCH_KEY_PAIR);
+$relatorio4_data = array_replace($meses_periodo, $novosPacientesData);
 
 include 'partials/_head.php';
 include 'partials/_sidebar.php';
@@ -124,16 +127,17 @@ include 'partials/_sidebar.php';
 
     <script>
         const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } };
+        const labelsMeses = <?php echo json_encode($labels_finais_mes); ?>;
         
         new Chart(document.getElementById('consultasRealizadasChart'), {
             type: 'bar',
-            data: { labels: <?php echo json_encode($relatorio1_labels); ?>, datasets: [ { label: 'Agendadas', data: <?php echo json_encode($relatorio1_data_agendadas); ?>, backgroundColor: 'rgba(245, 158, 11, 0.8)', }, { label: 'Realizadas', data: <?php echo json_encode($relatorio1_data_realizadas); ?>, backgroundColor: 'rgba(16, 185, 129, 0.8)', } ] },
+            data: { labels: labelsMeses, datasets: [ { label: 'Agendadas', data: <?php echo json_encode(array_values($relatorio1_data_agendadas)); ?>, backgroundColor: 'rgba(245, 158, 11, 0.8)', }, { label: 'Realizadas', data: <?php echo json_encode(array_values($relatorio1_data_realizadas)); ?>, backgroundColor: 'rgba(16, 185, 129, 0.8)', } ] },
             options: { ...chartOptions, plugins: { legend: { display: true } } }
         });
 
         new Chart(document.getElementById('faturamentoChart'), {
             type: 'line',
-            data: { labels: <?php echo json_encode($relatorio2_labels); ?>, datasets: [{ label: 'Faturamento (R$)', data: <?php echo json_encode($relatorio2_data); ?>, borderColor: 'rgba(37, 99, 235, 1)', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3 }] },
+            data: { labels: labelsMeses, datasets: [{ label: 'Faturamento (R$)', data: <?php echo json_encode(array_values($relatorio2_data)); ?>, borderColor: 'rgba(37, 99, 235, 1)', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3 }] },
             options: chartOptions
         });
 
@@ -145,7 +149,7 @@ include 'partials/_sidebar.php';
 
         new Chart(document.getElementById('novosPacientesChart'), {
             type: 'bar',
-            data: { labels: <?php echo json_encode($relatorio4_labels); ?>, datasets: [{ label: 'Novos Pacientes', data: <?php echo json_encode($relatorio4_data); ?>, backgroundColor: 'rgba(16, 185, 129, 0.8)' }] },
+            data: { labels: labelsMeses, datasets: [{ label: 'Novos Pacientes', data: <?php echo json_encode(array_values($relatorio4_data)); ?>, backgroundColor: 'rgba(16, 185, 129, 0.8)' }] },
             options: chartOptions
         });
     </script>

@@ -64,6 +64,10 @@ include 'partials/_sidebar.php';
             </div>
         </div>
 
+        <div class="filter-bar">
+            <input type="text" class="search-input" placeholder="Buscar por paciente, médico, status...">
+        </div>
+
         <div class="data-section">
             <div class="table-container">
                 <table class="data-table">
