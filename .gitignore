@@ -1,0 +1,4 @@
+*.md
+.env
+*.zip
+*.sql
