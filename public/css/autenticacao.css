@@ -1,0 +1,159 @@
+/* ===== Reset ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(to bottom right, #e3eeff, #f5f8ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== Container ===== */
+.auth-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem;
+}
+
+.auth-box {
+    background: #fff;
+    width: 100%;
+    max-width: 400px;
+    padding: 2.5rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+/* ===== Header ===== */
+.auth-header .logo-circle {
+    width: 60px;
+    height: 60px;
+    background: #2563eb;
+    border-radius: 50%;
+    margin: 0 auto 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-header .icon {
+    width: 32px;
+    height: 32px;
+    color: #fff;
+}
+
+.auth-header h1 {
+    font-size: 1.4rem;
+    color: #111827;
+}
+
+.auth-header p {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+/* ===== Tabs ===== */
+.tab-container {
+    display: flex;
+    background: #f3f4f6;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    overflow: hidden;
+}
+
+.tab {
+    flex: 1;
+    padding: 0.6rem;
+    border: none;
+    background: none;
+    color: #6b7280;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab.active {
+    background: #fff;
+    color: #2563eb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Form ===== */
+.form {
+    display: none;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+.form.active {
+    display: block;
+}
+
+label {
+    display: block;
+    font-size: 0.85rem;
+    color: #374151;
+    margin-bottom: 0.4rem;
+}
+
+input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    transition: all 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+/* ===== Button ===== */
+.submit-btn {
+    width: 100%;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submit-btn:hover {
+    background: #1e40af;
+}
+
+/* ===== Links & Footer ===== */
+.forgot {
+    display: block;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #2563eb;
+    margin-top: 0.8rem;
+    text-decoration: none;
+}
+
+footer {
+    margin-top: 1.8rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1rem;
+    line-height: 1.4;
+}

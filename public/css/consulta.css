@@ -1,0 +1,64 @@
+/*
+ * Arquivo: consulta.css
+ * Descrição: Estilos específicos para a página de Gerenciamento de Consultas.
+ * * NOTA: Este arquivo deve ser importado APÓS o gerenciamento.css.
+ */
+
+/* -------------------- Filtros de Consulta -------------------- */
+
+.management-card .filter-bar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-bar select,
+.filter-bar input[type="date"] {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--card-bg);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.filter-bar select:focus,
+.filter-bar input[type="date"]:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* -------------------- Estilos Específicos de Status -------------------- */
+
+/* Estilo para Status 'Cancelada', usando a cor de erro (vermelho) */
+.status-badge.cancelada {
+    background-color: var(--error-color);
+    color: white;
+}
+
+/* Estilo para Status 'Finalizada' (Pode ser um tom de cinza escuro ou Primary) */
+.status-badge.finalizada {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* -------------------- Estilos de Ação (Tabela) -------------------- */
+
+/* Garante que o texto principal da coluna de paciente/médico se destaque ligeiramente */
+.data-table td.main-info {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* Estilo do ícone de exclusão/cancelamento (já está no gerenciamento.css, mas reafirmo) */
+.actions .delete-consult-icon {
+    background-color: #fee2e2; /* Fundo vermelho claro */
+    color: var(--error-color);
+}
+.actions .delete-consult-icon:hover {
+    background-color: #fecaca;
+}
