@@ -1,0 +1,2 @@
+# Controllers são invocados via public/actions/ — acesso HTTP direto permanece negado pelo app/.htaccess
+Require all denied

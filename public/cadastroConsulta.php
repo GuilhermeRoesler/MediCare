@@ -1,21 +1,21 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<?php
+require_once '../app/Core/bootstrap.php';
+Auth::requireLogin();
+extract(Auth::viewLocals());
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Nova Consulta</title>
-
-    <link rel="stylesheet" href="css/gerenciamento.css">
-    <link rel="stylesheet" href="css/formulario.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-
-<body>
-
-    <div class="form-card-container">
-
-        <form action="../app/Http/Controllers/consultaController.php?action=create" method="post" class="form-card">
+$pageTitle = 'Cadastro de Nova Consulta';
+$currentPage = 'consulta';
+$headerTitle = 'Nova Consulta';
+$headerSubtitle = 'Agende uma nova consulta no sistema';
+$pageStyles = ['formulario.css'];
+include 'partials/_head.php';
+include 'partials/_sidebar.php';
+?>
+<main class="main-content">
+    <?php include 'partials/_header.php'; ?>
+    <div class="form-card-container in-layout">
+        <form action="actions/consulta.php?action=create" method="post" class="form-card">
+            <?php echo Csrf::field(); ?>
             <div class="form-header">
                 <i class="fas fa-calendar-plus form-icon"></i>
                 <h2>Agendar Nova Consulta</h2>
@@ -95,12 +95,8 @@
                 <button type="submit" class="btn-primary">
                     <i class="fas fa-save"></i> Marcar Consulta
                 </button>
-                <a href="dashboard.php" class="btn-secondary">Cancelar</a>
+                <a href="consulta.php" class="btn-secondary">Cancelar</a>
             </div>
         </form>
-
     </div>
-
-</body>
-
-</html>
+<?php include 'partials/_footer.php'; ?>

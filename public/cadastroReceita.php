@@ -1,18 +1,21 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emissão de Receita</title>
-    <link rel="stylesheet" href="css/gerenciamento.css"> 
-    <link rel="stylesheet" href="css/formulario.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
+<?php
+require_once '../app/Core/bootstrap.php';
+Auth::requireLogin();
+extract(Auth::viewLocals());
 
-    <div class="form-card-container">
-        
-        <form action="../app/Http/Controllers/receitaController.php?action=create" method="post" class="form-card">
+$pageTitle = 'Emissão de Receita';
+$currentPage = 'receitas';
+$headerTitle = 'Nova Receita';
+$headerSubtitle = 'Emita uma nova receita médica';
+$pageStyles = ['formulario.css'];
+include 'partials/_head.php';
+include 'partials/_sidebar.php';
+?>
+<main class="main-content">
+    <?php include 'partials/_header.php'; ?>
+    <div class="form-card-container in-layout">
+        <form action="actions/receita.php?action=create" method="post" class="form-card">
+            <?php echo Csrf::field(); ?>
             <div class="form-header">
                 <i class="fas fa-file-prescription form-icon"></i>
                 <h2>Emitir Nova Receita</h2>
@@ -21,7 +24,7 @@
 
             <fieldset class="form-group-grid">
                 <legend>Dados da Prescrição</legend>
-                
+
                 <div class="form-field">
                     <label for="idPaciente">ID Paciente</label>
                     <div class="input-with-icon">
@@ -65,7 +68,7 @@
 
             <fieldset class="form-group-grid">
                 <legend>Datas</legend>
-                
+
                 <div class="form-field">
                     <label for="dataEmissao">Data de Emissão</label>
                     <div class="input-with-icon">
@@ -85,10 +88,8 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn-primary"><i class="fas fa-print"></i> Emitir Receita</button>
-                <a href="dashboard.php" class="btn-secondary">Cancelar</a>
+                <a href="receitas.php" class="btn-secondary">Cancelar</a>
             </div>
         </form>
-
     </div>
-</body>
-</html>
+<?php include 'partials/_footer.php'; ?>

@@ -1,9 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: autenticacao.php');
-    exit();
-}
+require_once '../app/Core/bootstrap.php';
+Auth::requireLogin();
+extract(Auth::viewLocals());
+
 require_once '../app/Models/Paciente.php';
 $id = $_GET['id'] ?? null;
 if (!$id) {
@@ -16,25 +15,20 @@ if (!$paciente) {
     header('Location: pacientes.php');
     exit();
 }
+
+$pageTitle = 'Atualizar Paciente';
+$currentPage = 'pacientes';
+$headerTitle = 'Atualizar Paciente';
+$headerSubtitle = 'Edite as informações do paciente';
+$pageStyles = ['formulario.css'];
+include 'partials/_head.php';
+include 'partials/_sidebar.php';
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atualizar Dados do Paciente</title>
-
-    <link rel="stylesheet" href="css/gerenciamento.css">
-    <link rel="stylesheet" href="css/formulario.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-
-<body>
-
-    <div class="form-card-container">
-
-        <form action="../app/Http/Controllers/pacienteController.php?action=update" method="post" class="form-card">
+<main class="main-content">
+    <?php include 'partials/_header.php'; ?>
+    <div class="form-card-container in-layout">
+        <form action="actions/paciente.php?action=update" method="post" class="form-card">
+            <?php echo Csrf::field(); ?>
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($paciente['id']); ?>">
             <div class="form-header">
                 <i class="fas fa-user-edit form-icon"></i>
@@ -97,9 +91,5 @@ if (!$paciente) {
                 <a href="pacientes.php" class="btn-secondary">Cancelar</a>
             </div>
         </form>
-
     </div>
-
-</body>
-
-</html>
+<?php include 'partials/_footer.php'; ?>

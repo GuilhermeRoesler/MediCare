@@ -1,102 +1,124 @@
-# MediCare System - Sistema de Gerenciamento de Clínicas
+# MediCare System
 
-O MediCare System é uma aplicação web completa para o gerenciamento de clínicas médicas, desenvolvida com foco em simplicidade, eficiência e segurança. A plataforma permite administrar pacientes, médicos, consultas, pagamentos e receitas de forma centralizada.
+Sistema web de gerenciamento de clínicas médicas: pacientes, médicos, consultas, pagamentos, receitas, dashboard e relatórios.
 
-![MediCare System](images/dashboard.png)
+![Dashboard MediCare](images/dashboard.png)
 
-## ✨ Funcionalidades Principais
+## Demonstração
 
-- **Autenticação Segura**: Sistema de login e cadastro de usuários com senhas criptografadas.
-- **Dashboard Interativo**: Painel de controle com estatísticas visuais, gráficos de desempenho (consultas, faturamento) e atalhos para ações rápidas.
-- **Gerenciamento de Pacientes**: Cadastro, atualização, listagem e exclusão de pacientes (CRUD completo).
-- **Gerenciamento de Médicos**: CRUD completo para médicos, incluindo informações como CRM, especialidade e status (ativo/inativo).
-- **Agendamento de Consultas**: Marcação de novas consultas, com detalhes sobre paciente, médico, horário, sala e motivo.
-- **Controle de Pagamentos**: Registro de pagamentos associados a consultas, com controle de status (pago, pendente, cancelado).
-- **Emissão de Receitas**: Geração e gerenciamento de receitas médicas, com controle de validade.
-- **Relatórios Gerenciais**: Visualização de dados consolidados sobre o desempenho da clínica e opção para exportar dados em formato CSV.
-- **Busca e Ordenação**: Funcionalidades de busca e ordenação em tempo real em todas as tabelas de gerenciamento.
+| Item | Valor |
+|------|--------|
+| **Repositório** | https://github.com/GuilhermeRoesler/MediCare |
+| **Demo local (Docker)** | http://localhost:8080 |
+| **Admin** | `admin@medicare.com` / `123456` |
+| **Recepção** | `recepcao@medicare.com` / `123456` |
 
-## 🚀 Tecnologias Utilizadas
+> Para publicar uma demo online, faça o deploy com Docker em Railway, Render ou qualquer VPS com PHP 8.2 + MySQL e atualize este README com a URL pública.
 
-Este projeto foi construído com uma arquitetura clássica de aplicação multi-página (MPA), utilizando tecnologias consolidadas e sem a necessidade de frameworks complexos.
+## Funcionalidades
 
-- **Backend**: **PHP 8+** (Orientado a Objetos)
-- **Frontend**: **HTML5**, **CSS3** e **JavaScript (Vanilla)**
-- **Banco de Dados**: **MySQL** com acesso via PDO
-- **Ícones**: **Font Awesome**
-- **Gráficos**: **Chart.js**
+- Autenticação com hash de senha, sessões e proteção CSRF
+- Perfis de usuário (`admin` e `recepção`)
+- Dashboard com KPIs e gráficos (Chart.js)
+- CRUD de pacientes, médicos, consultas, pagamentos e receitas
+- Relatórios com filtros reais (período e médico) e exportação CSV
+- Busca e ordenação nas tabelas
+- Layout responsivo com menu mobile
 
-## 🔧 Instalação e Configuração
+## Stack
 
-Para executar o projeto localmente, siga os passos abaixo.
+- **Backend:** PHP 8.1+ (OOP), PDO/MySQL
+- **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+- **Infra:** Docker Compose, GitHub Actions (lint + PHPUnit)
+- **Libs UI:** Font Awesome, Chart.js, Inter (Google Fonts)
 
-### Pré-requisitos
+## Arquitetura
 
-- Um ambiente de servidor web com suporte a PHP (XAMPP, WAMP, MAMP ou similar).
-- Servidor de banco de dados MySQL.
-- Um navegador web moderno.
+Aplicação multi-página (MPA) com separação clara:
 
-### Passos
+```
+app/                  # Código protegido (sem acesso HTTP direto)
+  Core/               # Conexao, Auth, Csrf, bootstrap
+  Models/             # Acesso a dados (PDO prepared statements)
+  Http/Controllers/   # Entry points legados (redirecionam)
 
-1.  **Clone o Repositório**
+public/               # Document root
+  actions/            # Endpoints POST autenticados + CSRF
+  partials/           # Layout (head, sidebar, header, footer)
+  *.php               # Páginas da UI
+```
 
-    ```bash
-    git clone https://github.com/seu-usuario/medicare-system.git
-    ```
+**Decisões:** MPA em PHP puro para simplicidade de deploy e aprendizado claro de HTTP/sessões; PDO preparado contra SQL injection; tokens CSRF em todos os formulários; Document Root em `public/` para isolar Models/Core.
 
-    Ou faça o download dos arquivos e extraia-os.
+## Início rápido com Docker
 
-2.  **Mova os Arquivos**
-    Mova a pasta do projeto para o diretório raiz do seu servidor web (ex: `htdocs` no XAMPP).
+```bash
+git clone https://github.com/GuilhermeRoesler/MediCare.git
+cd MediCare
+docker compose up --build -d
+```
 
-3.  **Configure o Banco de Dados**
+Acesse http://localhost:8080 e entre com `admin@medicare.com` / `123456`.
 
-    - Inicie seu servidor MySQL.
-    - Crie um novo banco de dados com o nome `clinica`.
-    - Importe o arquivo `database.sql` (localizado na raiz do projeto) para criar as tabelas e inserir os dados iniciais.
+O MySQL sobe na porta `3307` (host) e o schema/seed de `database.sql` é importado automaticamente.
 
-4.  **Configure a Conexão**
+## Instalação manual (XAMPP / WAMP)
 
-    - Abra o arquivo `app/Core/Conexao.php`.
-    - Atualize as variáveis estáticas com as suas credenciais do MySQL:
-      ```php
-      private static $servidor = "localhost";
-      private static $banco    = "clinica";
-      private static $usuario  = "seu_usuario_mysql";
-      private static $senha    = "sua_senha_mysql";
-      ```
+1. Clone o repositório e aponte o Document Root do Apache para a pasta `public/` (recomendado) **ou** acesse via `/MediCare/public/`.
+2. Crie o banco e importe o seed:
 
-5.  **Acesse a Aplicação**
-    - Inicie seu servidor Apache.
-    - Abra o navegador e acesse `http://localhost/nome-da-pasta-do-projeto/`.
-    - Você será redirecionado para a página de autenticação.
+```bash
+mysql -u root -p < database.sql
+```
 
-## 📂 Estrutura de Arquivos
+3. Configure o ambiente:
 
-A estrutura do projeto é organizada para separar as responsabilidades:
+```bash
+cp .env.example .env
+# Edite DB_HOST, DB_NAME, DB_USER e DB_PASS
+```
+
+4. Abra `http://localhost/.../public/autenticacao.php`.
+
+## Testes e CI
+
+```bash
+composer install
+composer test
+```
+
+O workflow em `.github/workflows/ci.yml` valida sintaxe PHP e executa o PHPUnit em push/PR.
+
+## Segurança (destaques)
+
+- Senhas com `password_hash` / `password_verify`
+- Sessão obrigatória em páginas e actions
+- Token CSRF em formulários
+- Pasta `app/` bloqueada via `.htaccess`
+- Saída HTML escapada com `htmlspecialchars` nas listagens
+
+## Estrutura
 
 ```
 /
 ├── app/
-│   ├── Core/         # Conexão com o banco de dados.
-│   ├── Http/
-│   │   └── Controllers/ # Lógica de negócio e controle de requisições.
-│   └── Models/       # Classes que representam as tabelas do banco.
-│
+│   ├── Core/
+│   ├── Http/Controllers/
+│   └── Models/
 ├── public/
-│   ├── css/          # Arquivos de estilo (CSS).
-│   ├── js/           # Scripts do lado do cliente (JavaScript).
-│   ├── partials/     # Componentes reutilizáveis (header, sidebar).
-│   └── *.php         # Páginas visíveis ao usuário.
-│
-├── database.sql      # Script de criação do banco de dados.
-└── README.md         # Este arquivo.
+│   ├── actions/
+│   ├── css/
+│   ├── js/
+│   ├── partials/
+│   └── *.php
+├── tests/
+├── database.sql
+├── docker-compose.yml
+├── Dockerfile
+├── composer.json
+└── README.md
 ```
 
-## 🤝 Contribuições
+## Licença
 
-Contribuições são bem-vindas! Se você tiver sugestões para melhorar o projeto, sinta-se à vontade para criar um _fork_ e abrir um _pull request_.
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+MIT — veja [LICENSE](LICENSE).

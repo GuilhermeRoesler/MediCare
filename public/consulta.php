@@ -1,11 +1,7 @@
 <?php
-session_start();
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: autenticacao.php');
-    exit();
-}
-$nomeUsuario = $_SESSION['usuario_nome'] ?? 'Usuário';
-$primeiraLetra = strtoupper(substr($nomeUsuario, 0, 1));
+require_once '../app/Core/bootstrap.php';
+Auth::requireLogin();
+extract(Auth::viewLocals());
 
 require_once '../app/Models/Consulta.php';
 $consultaModel = new Consulta(null, null, null, null, null, null, null);

@@ -1,3 +1,3 @@
-# Nega acesso direto a todos os arquivos dentro da pasta app/
-# Isso protege seus Models, Controllers e lógica de negócio.
-Deny from all
+# Protege Models, Core e demais arquivos internos.
+# Controllers são executados apenas via public/actions/*.php
+Require all denied

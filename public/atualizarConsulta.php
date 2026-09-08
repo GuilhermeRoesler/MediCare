@@ -1,21 +1,41 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<?php
+require_once '../app/Core/bootstrap.php';
+Auth::requireLogin();
+extract(Auth::viewLocals());
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atualizar Consulta</title>
+require_once '../app/Models/Consulta.php';
 
-    <link rel="stylesheet" href="css/gerenciamento.css">
-    <link rel="stylesheet" href="css/formulario.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
+function toDatetimeLocal(?string $dt): string {
+    if (!$dt) return '';
+    return date('Y-m-d\TH:i', strtotime($dt));
+}
 
-<body>
+$id = $_GET['id'] ?? null;
+if (!$id) {
+    header('Location: consulta.php');
+    exit();
+}
+$consultaModel = new Consulta(null, null, null, null, null, null, null);
+$consulta = $consultaModel->buscarPorId($id);
+if (!$consulta) {
+    header('Location: consulta.php');
+    exit();
+}
 
-    <div class="form-card-container">
-
-        <form action="../app/Http/Controllers/consultaController.php?action=update" method="post" class="form-card">
+$pageTitle = 'Atualizar Consulta';
+$currentPage = 'consulta';
+$headerTitle = 'Atualizar Consulta';
+$headerSubtitle = 'Edite as informações da consulta';
+$pageStyles = ['formulario.css'];
+include 'partials/_head.php';
+include 'partials/_sidebar.php';
+?>
+<main class="main-content">
+    <?php include 'partials/_header.php'; ?>
+    <div class="form-card-container in-layout">
+        <form action="actions/consulta.php?action=update" method="post" class="form-card">
+            <?php echo Csrf::field(); ?>
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($consulta['id']); ?>">
             <div class="form-header">
                 <i class="fas fa-edit form-icon"></i>
                 <h2>Atualizar Consulta</h2>
@@ -26,18 +46,10 @@
                 <legend>Informações da Consulta</legend>
 
                 <div class="form-field">
-                    <label for="id">ID da Consulta</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-hashtag"></i>
-                        <input type="number" id="id" name="id" required placeholder="Ex: 45">
-                    </div>
-                </div>
-
-                <div class="form-field">
                     <label for="idMedico">ID Médico</label>
                     <div class="input-with-icon">
                         <i class="fas fa-user-md"></i>
-                        <input type="number" id="idMedico" name="idMedico" required placeholder="Ex: 101">
+                        <input type="number" id="idMedico" name="idMedico" required placeholder="Ex: 101" value="<?php echo htmlspecialchars($consulta['id_medico']); ?>">
                     </div>
                 </div>
 
@@ -45,7 +57,7 @@
                     <label for="idPaciente">ID Paciente</label>
                     <div class="input-with-icon">
                         <i class="fas fa-user-injured"></i>
-                        <input type="number" id="idPaciente" name="idPaciente" required placeholder="Ex: 54">
+                        <input type="number" id="idPaciente" name="idPaciente" required placeholder="Ex: 54" value="<?php echo htmlspecialchars($consulta['id_paciente']); ?>">
                     </div>
                 </div>
 
@@ -53,7 +65,7 @@
                     <label for="inicio">Início da Consulta</label>
                     <div class="input-with-icon">
                         <i class="far fa-clock"></i>
-                        <input type="datetime-local" id="inicio" name="inicio" required>
+                        <input type="datetime-local" id="inicio" name="inicio" required value="<?php echo htmlspecialchars(toDatetimeLocal($consulta['inicio'])); ?>">
                     </div>
                 </div>
 
@@ -61,7 +73,7 @@
                     <label for="fim">Fim da Consulta</label>
                     <div class="input-with-icon">
                         <i class="far fa-clock"></i>
-                        <input type="datetime-local" id="fim" name="fim" required>
+                        <input type="datetime-local" id="fim" name="fim" required value="<?php echo htmlspecialchars(toDatetimeLocal($consulta['fim'])); ?>">
                     </div>
                 </div>
 
@@ -69,7 +81,7 @@
                     <label for="sala">Sala</label>
                     <div class="input-with-icon">
                         <i class="fas fa-door-open"></i>
-                        <input type="text" id="sala" name="sala" required placeholder="Número ou nome da sala">
+                        <input type="text" id="sala" name="sala" required placeholder="Número ou nome da sala" value="<?php echo htmlspecialchars($consulta['sala']); ?>">
                     </div>
                 </div>
 
@@ -78,10 +90,10 @@
                     <div class="input-with-icon">
                         <i class="fas fa-check-circle"></i>
                         <select id="status" name="status" required>
-                            <option value="agendada">Agendada</option>
-                            <option value="confirmada">Confirmada</option>
-                            <option value="cancelada">Cancelada</option>
-                            <option value="finalizada">Finalizada</option>
+                            <option value="agendada" <?php echo $consulta['status'] === 'agendada' ? 'selected' : ''; ?>>Agendada</option>
+                            <option value="confirmada" <?php echo $consulta['status'] === 'confirmada' ? 'selected' : ''; ?>>Confirmada</option>
+                            <option value="cancelada" <?php echo $consulta['status'] === 'cancelada' ? 'selected' : ''; ?>>Cancelada</option>
+                            <option value="finalizada" <?php echo $consulta['status'] === 'finalizada' ? 'selected' : ''; ?>>Finalizada</option>
                         </select>
                     </div>
                 </div>
@@ -93,7 +105,7 @@
                     <label for="motivo">Motivo</label>
                     <div class="input-with-icon">
                         <i class="fas fa-pencil-alt"></i>
-                        <input type="text" id="motivo" name="motivo" required placeholder="Motivo da atualização da consulta">
+                        <input type="text" id="motivo" name="motivo" required placeholder="Motivo da atualização da consulta" value="<?php echo htmlspecialchars($consulta['motivo']); ?>">
                     </div>
                 </div>
             </fieldset>
@@ -102,12 +114,8 @@
                 <button type="submit" class="btn-primary">
                     <i class="fas fa-sync-alt"></i> Atualizar Consulta
                 </button>
-                <a href="dashboard.php" class="btn-secondary">Cancelar</a>
+                <a href="consulta.php" class="btn-secondary">Cancelar</a>
             </div>
         </form>
-
     </div>
-
-</body>
-
-</html>
+<?php include 'partials/_footer.php'; ?>

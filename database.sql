@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
+    perfil ENUM('admin', 'recepcao') NOT NULL DEFAULT 'recepcao',
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -82,10 +83,11 @@ CREATE TABLE IF NOT EXISTS receitas (
 -- POPULAÇÃO INICIAL (MOCK DATA)
 -- --------------------------------------------------------
 
--- 1. Usuário Admin
--- Senha do admin é: 123456
-INSERT INTO usuarios (nome, email, senha) VALUES 
-('Administrador', 'admin@medicare.com', '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm');
+-- 1. Usuários de demonstração
+-- Senha de ambos: 123456
+INSERT INTO usuarios (nome, email, senha, perfil) VALUES 
+('Administrador', 'admin@medicare.com', '$2y$12$xUiTL2NH0VkyVc3ci/NyMusWikY.qGSbNuu.a11gcH3XcOLf0E6hG', 'admin'),
+('Recepção MediCare', 'recepcao@medicare.com', '$2y$12$xUiTL2NH0VkyVc3ci/NyMusWikY.qGSbNuu.a11gcH3XcOLf0E6hG', 'recepcao');
 
 -- 2. Médicos
 INSERT INTO medicos (nome_completo, crm, telefone, especialidade, email, status) VALUES 

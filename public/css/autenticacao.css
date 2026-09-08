@@ -140,13 +140,25 @@ input:focus {
 }
 
 /* ===== Links & Footer ===== */
-.forgot {
-    display: block;
-    text-align: center;
-    font-size: 0.85rem;
-    color: #2563eb;
-    margin-top: 0.8rem;
-    text-decoration: none;
+.auth-error {
+    color: #b91c1c;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.demo-hint {
+    margin-top: 0.9rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.demo-hint strong {
+    color: #374151;
 }
 
 footer {

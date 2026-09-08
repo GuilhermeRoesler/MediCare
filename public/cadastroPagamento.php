@@ -1,18 +1,21 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Pagamento</title>
-    <link rel="stylesheet" href="css/gerenciamento.css"> 
-    <link rel="stylesheet" href="css/formulario.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
+<?php
+require_once '../app/Core/bootstrap.php';
+Auth::requireLogin();
+extract(Auth::viewLocals());
 
-    <div class="form-card-container">
-        
-        <form action="../app/Http/Controllers/pagamentoController.php?action=create" method="post" class="form-card">
+$pageTitle = 'Registro de Pagamento';
+$currentPage = 'pagamento';
+$headerTitle = 'Novo Pagamento';
+$headerSubtitle = 'Registre um novo pagamento no sistema';
+$pageStyles = ['formulario.css'];
+include 'partials/_head.php';
+include 'partials/_sidebar.php';
+?>
+<main class="main-content">
+    <?php include 'partials/_header.php'; ?>
+    <div class="form-card-container in-layout">
+        <form action="actions/pagamento.php?action=create" method="post" class="form-card">
+            <?php echo Csrf::field(); ?>
             <div class="form-header">
                 <i class="fas fa-file-invoice-dollar form-icon"></i>
                 <h2>Registrar Novo Pagamento</h2>
@@ -21,7 +24,7 @@
 
             <fieldset class="form-group-grid">
                 <legend>Detalhes da Transação</legend>
-                
+
                 <div class="form-field">
                     <label for="idConsulta">ID Consulta</label>
                     <div class="input-with-icon">
@@ -41,7 +44,7 @@
 
             <fieldset class="form-group-grid">
                 <legend>Método e Status</legend>
-                
+
                 <div class="form-field">
                     <label for="dataPagamento">Data do Pagamento</label>
                     <div class="input-with-icon">
@@ -78,10 +81,8 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Registrar Pagamento</button>
-                <a href="dashboard.php" class="btn-secondary">Cancelar</a>
+                <a href="pagamento.php" class="btn-secondary">Cancelar</a>
             </div>
         </form>
-
     </div>
-</body>
-</html>
+<?php include 'partials/_footer.php'; ?>

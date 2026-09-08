@@ -5,13 +5,25 @@
 
 /* -------------------- Container e Card do Formulário -------------------- */
 .form-card-container {
-    /* Configurações para centralizar o formulário na tela (simulando um modal ou uma página de cadastro simples) */
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding: 30px;
     min-height: 100vh; 
-    background-color: var(--background-color); /* Fundo da página */
+    background-color: var(--background-color);
+}
+
+.form-card-container.in-layout {
+    min-height: auto;
+    padding: 0;
+    background: transparent;
+    justify-content: stretch;
+}
+
+.form-card-container.in-layout .form-card {
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-sm);
 }
 
 .form-card {
