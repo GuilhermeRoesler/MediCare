@@ -30,11 +30,6 @@
                 <p>Gestão de consultas, pacientes e equipe clínica</p>
             </div>
 
-            <div class="tab-container" role="tablist">
-                <button type="button" id="loginTab" class="tab active" onclick="toggleMode('login')" role="tab" aria-selected="true">Entrar</button>
-                <button type="button" id="registerTab" class="tab" onclick="toggleMode('register')" role="tab" aria-selected="false">Cadastrar</button>
-            </div>
-
             <form id="loginForm" class="form active" data-demo-login>
                 <label for="login-email">Email</label>
                 <input id="login-email" type="email" name="email" value="admin@medicare.com" placeholder="Digite seu email" required autocomplete="email" />
@@ -44,23 +39,7 @@
 
                 <button type="submit" class="submit-btn">Entrar na demo</button>
                 <p class="demo-hint">Qualquer valor funciona nesta demo. Credenciais reais: <strong>admin@medicare.com</strong> / <strong>123456</strong></p>
-                <p class="auth-demo-note">Esta página no GitHub Pages não executa PHP. O botão Entrar abre o painel com dados mock do seed.</p>
-            </form>
-
-            <form id="registerForm" class="form" data-demo-register>
-                <label for="reg-nome">Nome Completo</label>
-                <input id="reg-nome" type="text" name="nome" placeholder="Digite seu nome completo" required autocomplete="name" />
-
-                <label for="reg-email">Email</label>
-                <input id="reg-email" type="email" name="email" placeholder="Digite seu email" required autocomplete="email" />
-
-                <label for="reg-senha">Senha</label>
-                <input id="reg-senha" type="password" name="senha" placeholder="Mínimo 6 caracteres" required minlength="6" autocomplete="new-password" />
-
-                <label for="reg-confirmar">Confirmar Senha</label>
-                <input id="reg-confirmar" type="password" name="confirmar_senha" placeholder="Digite a senha novamente" required minlength="6" autocomplete="new-password" />
-
-                <button type="submit" class="submit-btn">Cadastrar</button>
+                <p class="auth-demo-note">Cadastro público desabilitado. Novos usuários são criados apenas por administradores.</p>
             </form>
 
             <footer>
@@ -70,21 +49,5 @@
     </div>
 
     <script src="js/demo.js"></script>
-    <script>
-        const loginTab = document.getElementById('loginTab');
-        const registerTab = document.getElementById('registerTab');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-
-        function toggleMode(mode) {
-            const isLogin = mode === 'login';
-            loginTab.classList.toggle('active', isLogin);
-            registerTab.classList.toggle('active', !isLogin);
-            loginForm.classList.toggle('active', isLogin);
-            registerForm.classList.toggle('active', !isLogin);
-            loginTab.setAttribute('aria-selected', isLogin ? 'true' : 'false');
-            registerTab.setAttribute('aria-selected', isLogin ? 'false' : 'true');
-        }
-    </script>
 </body>
 </html>

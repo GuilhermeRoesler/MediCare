@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class Csrf
 {
     private const SESSION_KEY = '_csrf_token';

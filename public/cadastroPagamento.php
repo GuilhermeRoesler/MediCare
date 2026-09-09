@@ -3,6 +3,10 @@ require_once '../app/Core/bootstrap.php';
 Auth::requireLogin();
 extract(Auth::viewLocals());
 
+require_once '../app/Models/Consulta.php';
+$consultaModel = new Consulta(null, null, null, null, null, null, null);
+$consultas = $consultaModel->listar();
+
 $pageTitle = 'Registro de Pagamento';
 $currentPage = 'pagamento';
 $headerTitle = 'Novo Pagamento';
@@ -26,10 +30,19 @@ include 'partials/_sidebar.php';
                 <legend>Detalhes da Transação</legend>
 
                 <div class="form-field">
-                    <label for="idConsulta">ID Consulta</label>
+                    <label for="idConsulta">Consulta</label>
                     <div class="input-with-icon">
                         <i class="fas fa-calendar-check"></i>
-                        <input type="number" id="idConsulta" name="idConsulta" required placeholder="ID da consulta relacionada">
+                        <select id="idConsulta" name="idConsulta" required>
+                            <option value="">Selecione a consulta</option>
+                            <?php foreach ($consultas as $consulta): ?>
+                                <option value="<?php echo (int) $consulta['id']; ?>">
+                                    <?php echo htmlspecialchars(
+                                        '#' . $consulta['id'] . ' — ' . $consulta['paciente_nome'] . ' / ' . $consulta['medico_nome'] . ' — ' . date('d/m/Y H:i', strtotime($consulta['inicio']))
+                                    ); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
@@ -37,7 +50,7 @@ include 'partials/_sidebar.php';
                     <label for="valor">Valor (R$)</label>
                     <div class="input-with-icon">
                         <i class="fas fa-dollar-sign"></i>
-                        <input type="number" id="valor" name="valor" required placeholder="Ex: 150.00">
+                        <input type="number" id="valor" name="valor" required step="0.01" min="0" placeholder="Ex: 150.00">
                     </div>
                 </div>
             </fieldset>
@@ -57,7 +70,7 @@ include 'partials/_sidebar.php';
                     <label for="metodo">Método de Pagamento</label>
                     <div class="input-with-icon">
                         <i class="fas fa-credit-card"></i>
-                        <select type="text" id="metodo" name="metodo" required>
+                        <select id="metodo" name="metodo" required>
                             <option value="cartao">Cartão de Crédito/Débito</option>
                             <option value="pix">PIX</option>
                             <option value="dinheiro">Dinheiro</option>
@@ -70,7 +83,7 @@ include 'partials/_sidebar.php';
                     <label for="status">Status</label>
                     <div class="input-with-icon">
                         <i class="fas fa-check-circle"></i>
-                        <select type="text" id="status" name="status" required>
+                        <select id="status" name="status" required>
                             <option value="pago">Pago</option>
                             <option value="pendente">Pendente</option>
                             <option value="cancelado">Cancelado</option>

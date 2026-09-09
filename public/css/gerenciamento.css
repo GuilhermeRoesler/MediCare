@@ -229,14 +229,40 @@ a {
     padding: 8px;
     background-color: var(--error-color);
     color: var(--card-bg);
+    border: none;
     border-radius: var(--radius-sm);
     font-size: 0.9rem;
     font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
     transition: background-color 0.2s;
+}
+
+.logout-form {
+    width: 100%;
 }
 
 .logout-btn:hover {
     background-color: #b91c1c;
+}
+
+.flash-message {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.flash-success {
+    background-color: var(--success-soft);
+    color: var(--success-color);
+    border: 1px solid #a7f3d0;
+}
+
+.flash-error {
+    background-color: var(--error-soft);
+    color: var(--error-color);
+    border: 1px solid #fecaca;
 }
 
 /* -------------------- CONTEÚDO PRINCIPAL E CABEÇALHO -------------------- */

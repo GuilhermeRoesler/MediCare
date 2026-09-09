@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../app/Core/Auth.php';
 require_once __DIR__ . '/../app/Core/Csrf.php';
+require_once __DIR__ . '/../app/Core/Flash.php';
 
 final class AuthTest extends TestCase
 {
@@ -47,6 +48,36 @@ final class AuthTest extends TestCase
         ]);
 
         $this->assertSame('Recepção', Auth::perfilLabel());
+        $this->assertFalse(Auth::isAdmin());
+    }
+
+    public function testLoginRejectsMissingProfile(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Auth::login([
+            'id' => 1,
+            'nome' => 'Sem perfil',
+        ]);
+    }
+
+    public function testLoginRejectsInvalidProfile(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Auth::login([
+            'id' => 1,
+            'nome' => 'Invasor',
+            'perfil' => 'superuser',
+        ]);
+    }
+
+    public function testPerfilDoesNotDefaultToAdmin(): void
+    {
+        Auth::startSession();
+        $_SESSION['usuario_id'] = 9;
+        $_SESSION['usuario_nome'] = 'X';
+        unset($_SESSION['usuario_perfil']);
+
+        $this->assertSame('', Auth::perfil());
         $this->assertFalse(Auth::isAdmin());
     }
 }

@@ -18,3 +18,12 @@
         </div>
     </div>
 </header>
+<?php
+$flash = Flash::get();
+if ($flash):
+    $flashType = ($flash['type'] ?? '') === 'success' ? 'success' : 'error';
+?>
+<div class="flash-message flash-<?php echo $flashType; ?>" role="alert">
+    <?php echo htmlspecialchars($flash['message'] ?? ''); ?>
+</div>
+<?php endif; ?>

@@ -1,6 +1,6 @@
 <?php
 require_once '../app/Core/bootstrap.php';
-Auth::requireLogin();
+Auth::requireAdmin();
 extract(Auth::viewLocals());
 
 require_once '../app/Models/Medico.php';

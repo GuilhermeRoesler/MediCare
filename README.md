@@ -28,10 +28,11 @@ Para a demo **completa** (login real, banco, CRUD), use Docker local ou um VPS c
 
 ## Funcionalidades
 
-- Autenticação com hash de senha, sessões e proteção CSRF
-- Perfis de usuário (`admin` e `recepção`)
+- Autenticação com hash de senha, sessões endurecidas e proteção CSRF
+- Perfis com RBAC (`admin` e `recepção`): exclusões e gestão de médicos só para admin
 - Dashboard com KPIs e gráficos (Chart.js)
 - CRUD de pacientes, médicos, consultas, pagamentos e receitas
+- Validação server-side, flash messages e selects em vez de IDs manuais
 - Relatórios com filtros reais (período e médico) e exportação CSV
 - Busca e ordenação nas tabelas
 - Layout responsivo com menu mobile
@@ -49,9 +50,8 @@ Aplicação multi-página (MPA) com separação clara:
 
 ```
 app/                  # Código protegido (sem acesso HTTP direto)
-  Core/               # Conexao, Auth, Csrf, bootstrap
+  Core/               # Conexao, Auth, Csrf, Flash, Validator, bootstrap
   Models/             # Acesso a dados (PDO prepared statements)
-  Http/Controllers/   # Entry points legados (redirecionam)
 
 public/               # Document root
   actions/            # Endpoints POST autenticados + CSRF
@@ -59,7 +59,7 @@ public/               # Document root
   *.php               # Páginas da UI
 ```
 
-**Decisões:** MPA em PHP puro para simplicidade de deploy e aprendizado claro de HTTP/sessões; PDO preparado contra SQL injection; tokens CSRF em todos os formulários; Document Root em `public/` para isolar Models/Core.
+**Decisões:** MPA em PHP puro para simplicidade de deploy e aprendizado claro de HTTP/sessões; PDO preparado contra SQL injection; tokens CSRF em todos os formulários; Document Root em `public/` para isolar Models/Core; cadastro público desabilitado (usuários só via seed/admin no banco).
 
 ## Início rápido com Docker
 
@@ -103,10 +103,15 @@ O workflow em `.github/workflows/ci.yml` valida sintaxe PHP e executa o PHPUnit 
 ## Segurança (destaques)
 
 - Senhas com `password_hash` / `password_verify`
-- Sessão obrigatória em páginas e actions
-- Token CSRF em formulários
+- Sessão com `session_regenerate_id`, cookies `HttpOnly` + `SameSite=Lax`
+- Token CSRF em formulários (incluindo logout via POST)
+- RBAC: admin gerencia médicos e exclusões; recepção faz CRUD operacional
+- Cadastro público desabilitado
+- Validação server-side (e-mail, CPF, enums, datas, FKs)
+- FKs com `ON DELETE RESTRICT` para preservar histórico clínico
 - Pasta `app/` bloqueada via `.htaccess`
 - Saída HTML escapada com `htmlspecialchars` nas listagens
+- Flash messages sem vazar detalhes de SQL ao usuário
 
 ## Estrutura
 
@@ -114,7 +119,6 @@ O workflow em `.github/workflows/ci.yml` valida sintaxe PHP e executa o PHPUnit 
 /
 ├── app/
 │   ├── Core/
-│   ├── Http/Controllers/
 │   └── Models/
 ├── public/               # App PHP (document root)
 ├── docs/                 # Demo estática (GitHub Pages)

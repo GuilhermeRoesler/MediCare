@@ -175,7 +175,9 @@ include 'partials/_sidebar.php';
         <h3><i class="fas fa-bolt"></i> Ações Rápidas</h3>
         <div class="quick-actions-grid">
             <a href="cadastroPaciente.php" class="action-btn full-row">Novo Paciente </a>
+            <?php if ($isAdmin): ?>
             <a href="cadastroMedico.php" class="action-btn full-row">Novo Médico </a>
+            <?php endif; ?>
             <a href="cadastroConsulta.php" class="action-btn full-row">Nova Consulta </a>
             <a href="cadastroReceita.php" class="action-btn full-row">Nova Receita </a>
             <a href="cadastroPagamento.php" class="action-btn full-row">Novo Pagamento </a>

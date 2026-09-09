@@ -1,6 +1,6 @@
 <?php
 require_once '../app/Core/bootstrap.php';
-Auth::requireLogin();
+Auth::requireAdmin();
 extract(Auth::viewLocals());
 
 $pageTitle = 'Excluir Médico';

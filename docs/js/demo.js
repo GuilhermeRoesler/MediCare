@@ -33,13 +33,6 @@
         });
     });
 
-    document.querySelectorAll('form[data-demo-register]').forEach((form) => {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            showToast('Demo estática: o cadastro real exige PHP + MySQL. Entre com o botão Entrar para ver o painel.');
-        });
-    });
-
     document.querySelectorAll('form[data-demo-filter]').forEach((form) => {
         form.addEventListener('submit', function (e) {
             e.preventDefault();

@@ -3,6 +3,14 @@ require_once '../app/Core/bootstrap.php';
 Auth::requireLogin();
 extract(Auth::viewLocals());
 
+require_once '../app/Models/Medico.php';
+require_once '../app/Models/Paciente.php';
+
+$medicoModel = new Medico(null, null, null, null, null, null);
+$pacienteModel = new Paciente(null, null, null, null, null);
+$medicos = $medicoModel->listar();
+$pacientes = $pacienteModel->listar();
+
 $pageTitle = 'Cadastro de Nova Consulta';
 $currentPage = 'consulta';
 $headerTitle = 'Nova Consulta';
@@ -26,18 +34,32 @@ include 'partials/_sidebar.php';
                 <legend>Informações do Atendimento</legend>
 
                 <div class="form-field">
-                    <label for="idMedico">ID Médico</label>
+                    <label for="idMedico">Médico</label>
                     <div class="input-with-icon">
                         <i class="fas fa-user-md"></i>
-                        <input type="number" id="idMedico" name="idMedico" required placeholder="Ex: 101">
+                        <select id="idMedico" name="idMedico" required>
+                            <option value="">Selecione o médico</option>
+                            <?php foreach ($medicos as $medico): ?>
+                                <option value="<?php echo (int) $medico['id']; ?>">
+                                    <?php echo htmlspecialchars($medico['nome_completo'] . ' — ' . $medico['especialidade']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-field">
-                    <label for="idPaciente">ID Paciente</label>
+                    <label for="idPaciente">Paciente</label>
                     <div class="input-with-icon">
                         <i class="fas fa-user-injured"></i>
-                        <input type="number" id="idPaciente" name="idPaciente" required placeholder="Ex: 54">
+                        <select id="idPaciente" name="idPaciente" required>
+                            <option value="">Selecione o paciente</option>
+                            <?php foreach ($pacientes as $paciente): ?>
+                                <option value="<?php echo (int) $paciente['id']; ?>">
+                                    <?php echo htmlspecialchars($paciente['nome_completo']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
@@ -61,7 +83,7 @@ include 'partials/_sidebar.php';
                     <label for="sala">Sala</label>
                     <div class="input-with-icon">
                         <i class="fas fa-door-open"></i>
-                        <input type="number" id="sala" name="sala" required placeholder="Ex: 3">
+                        <input type="text" id="sala" name="sala" required placeholder="Ex: 3">
                     </div>
                 </div>
 

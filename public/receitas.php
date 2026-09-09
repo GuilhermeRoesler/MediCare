@@ -96,7 +96,9 @@ include 'partials/_sidebar.php';
                                     <td><span class="status-badge <?php echo $receita['status'] === 'Vencida' ? 'vencida' : 'ativo'; ?>"><?php echo htmlspecialchars($receita['status']); ?></span></td>
                                     <td class="actions">
                                         <a href="atualizarReceita.php?id=<?php echo $receita['id']; ?>" class="action-icon edit-icon" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                        <?php if ($isAdmin): ?>
                                         <a href="deletarReceita.php?id=<?php echo $receita['id']; ?>" class="action-icon delete-consult-icon" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

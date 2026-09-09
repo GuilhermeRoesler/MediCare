@@ -3,6 +3,14 @@ require_once '../app/Core/bootstrap.php';
 Auth::requireLogin();
 extract(Auth::viewLocals());
 
+require_once '../app/Models/Consulta.php';
+require_once '../app/Models/Paciente.php';
+
+$consultaModel = new Consulta(null, null, null, null, null, null, null);
+$pacienteModel = new Paciente(null, null, null, null, null);
+$consultas = $consultaModel->listar();
+$pacientes = $pacienteModel->listar();
+
 $pageTitle = 'Emissão de Receita';
 $currentPage = 'receitas';
 $headerTitle = 'Nova Receita';
@@ -26,18 +34,34 @@ include 'partials/_sidebar.php';
                 <legend>Dados da Prescrição</legend>
 
                 <div class="form-field">
-                    <label for="idPaciente">ID Paciente</label>
+                    <label for="idPaciente">Paciente</label>
                     <div class="input-with-icon">
                         <i class="fas fa-user-injured"></i>
-                        <input type="number" id="idPaciente" name="idPaciente" required placeholder="ID da Consulta">
+                        <select id="idPaciente" name="idPaciente" required>
+                            <option value="">Selecione o paciente</option>
+                            <?php foreach ($pacientes as $paciente): ?>
+                                <option value="<?php echo (int) $paciente['id']; ?>">
+                                    <?php echo htmlspecialchars($paciente['nome_completo']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-field">
-                    <label for="idMedico">ID Consulta</label>
+                    <label for="idConsulta">Consulta</label>
                     <div class="input-with-icon">
-                        <i class="fas fa-user-md"></i>
-                        <input type="number" id="idConsulta" name="idConsulta" required placeholder="ID do Médico prescritor">
+                        <i class="fas fa-calendar-check"></i>
+                        <select id="idConsulta" name="idConsulta" required>
+                            <option value="">Selecione a consulta</option>
+                            <?php foreach ($consultas as $consulta): ?>
+                                <option value="<?php echo (int) $consulta['id']; ?>" data-paciente="<?php echo (int) ($consulta['id_paciente'] ?? 0); ?>">
+                                    <?php echo htmlspecialchars(
+                                        '#' . $consulta['id'] . ' — ' . $consulta['paciente_nome'] . ' / ' . $consulta['medico_nome']
+                                    ); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
@@ -53,7 +77,7 @@ include 'partials/_sidebar.php';
                     <label for="quantidade">Quantidade</label>
                     <div class="input-with-icon">
                         <i class="fas fa-sort-numeric-up"></i>
-                        <input type="number" id="quantidade" name="quantidade" required placeholder="Quantidade de caixas/frascos">
+                        <input type="number" id="quantidade" name="quantidade" required min="1" placeholder="Quantidade de caixas/frascos">
                     </div>
                 </div>
 

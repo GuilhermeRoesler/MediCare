@@ -33,8 +33,9 @@ class Usuario {
         $usuario = $comando->fetch(PDO::FETCH_ASSOC);
 
         if ($usuario && password_verify($senha, $usuario['senha'])) {
-            if (!isset($usuario['perfil'])) {
-                $usuario['perfil'] = 'admin';
+            $perfil = $usuario['perfil'] ?? '';
+            if (!in_array($perfil, ['admin', 'recepcao'], true)) {
+                return false;
             }
             return $usuario;
         }

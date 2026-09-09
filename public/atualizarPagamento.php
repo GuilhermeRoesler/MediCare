@@ -4,6 +4,8 @@ Auth::requireLogin();
 extract(Auth::viewLocals());
 
 require_once '../app/Models/Pagamento.php';
+require_once '../app/Models/Consulta.php';
+
 $id = $_GET['id'] ?? null;
 if (!$id) {
     header('Location: pagamento.php');
@@ -15,6 +17,9 @@ if (!$pagamento) {
     header('Location: pagamento.php');
     exit();
 }
+
+$consultaModel = new Consulta(null, null, null, null, null, null, null);
+$consultas = $consultaModel->listar();
 
 $pageTitle = 'Atualizar Pagamento';
 $currentPage = 'pagamento';
@@ -40,16 +45,18 @@ include 'partials/_sidebar.php';
                 <legend>Detalhes da Transação</legend>
 
                 <div class="form-field">
-                    <label for="idConsulta">ID Consulta</label>
+                    <label for="idConsulta">Consulta</label>
                     <div class="input-with-icon">
                         <i class="fas fa-calendar-check"></i>
-                        <input
-                            type="number"
-                            id="idConsulta"
-                            name="idConsulta"
-                            required
-                            placeholder="ID da consulta relacionada"
-                            value="<?php echo htmlspecialchars($pagamento['id_consulta']); ?>">
+                        <select id="idConsulta" name="idConsulta" required>
+                            <?php foreach ($consultas as $consulta): ?>
+                                <option value="<?php echo (int) $consulta['id']; ?>" <?php echo (int) $pagamento['id_consulta'] === (int) $consulta['id'] ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars(
+                                        '#' . $consulta['id'] . ' — ' . $consulta['paciente_nome'] . ' / ' . $consulta['medico_nome'] . ' — ' . date('d/m/Y H:i', strtotime($consulta['inicio']))
+                                    ); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
@@ -63,6 +70,7 @@ include 'partials/_sidebar.php';
                             name="valor"
                             required
                             step="0.01"
+                            min="0"
                             placeholder="Ex: 150.00"
                             value="<?php echo htmlspecialchars($pagamento['valor']); ?>">
                     </div>

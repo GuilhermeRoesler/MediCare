@@ -1,6 +1,6 @@
 <?php
 require_once '../app/Core/bootstrap.php';
-Auth::requireLogin();
+Auth::requireAdmin();
 extract(Auth::viewLocals());
 
 $pageTitle = 'Excluir Paciente';
@@ -25,7 +25,7 @@ include 'partials/_sidebar.php';
                 <?php echo Csrf::field(); ?>
                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($_GET['id'] ?? ''); ?>">
 
-                <p style="margin-bottom: 1.5rem; color: #4b5563;">Esta ação não pode ser desfeita. Todos os dados associados (consultas, pagamentos, etc) a este paciente serão removidos permanentemente.</p>
+                <p style="margin-bottom: 1.5rem; color: #4b5563;">Esta ação não pode ser desfeita. Se o paciente tiver consultas, pagamentos ou receitas vinculadas, a exclusão será bloqueada.</p>
 
                 <button type="submit" class="submit-btn">Sim, Excluir</button>
                 <button type="button" class="cancel-btn" onclick="window.location.href='pacientes.php'">Cancelar</button>

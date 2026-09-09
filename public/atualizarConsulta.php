@@ -4,6 +4,8 @@ Auth::requireLogin();
 extract(Auth::viewLocals());
 
 require_once '../app/Models/Consulta.php';
+require_once '../app/Models/Medico.php';
+require_once '../app/Models/Paciente.php';
 
 function toDatetimeLocal(?string $dt): string {
     if (!$dt) return '';
@@ -21,6 +23,11 @@ if (!$consulta) {
     header('Location: consulta.php');
     exit();
 }
+
+$medicoModel = new Medico(null, null, null, null, null, null);
+$pacienteModel = new Paciente(null, null, null, null, null);
+$medicos = $medicoModel->listar();
+$pacientes = $pacienteModel->listar();
 
 $pageTitle = 'Atualizar Consulta';
 $currentPage = 'consulta';
@@ -46,18 +53,30 @@ include 'partials/_sidebar.php';
                 <legend>Informações da Consulta</legend>
 
                 <div class="form-field">
-                    <label for="idMedico">ID Médico</label>
+                    <label for="idMedico">Médico</label>
                     <div class="input-with-icon">
                         <i class="fas fa-user-md"></i>
-                        <input type="number" id="idMedico" name="idMedico" required placeholder="Ex: 101" value="<?php echo htmlspecialchars($consulta['id_medico']); ?>">
+                        <select id="idMedico" name="idMedico" required>
+                            <?php foreach ($medicos as $medico): ?>
+                                <option value="<?php echo (int) $medico['id']; ?>" <?php echo (int) $consulta['id_medico'] === (int) $medico['id'] ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($medico['nome_completo'] . ' — ' . $medico['especialidade']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-field">
-                    <label for="idPaciente">ID Paciente</label>
+                    <label for="idPaciente">Paciente</label>
                     <div class="input-with-icon">
                         <i class="fas fa-user-injured"></i>
-                        <input type="number" id="idPaciente" name="idPaciente" required placeholder="Ex: 54" value="<?php echo htmlspecialchars($consulta['id_paciente']); ?>">
+                        <select id="idPaciente" name="idPaciente" required>
+                            <?php foreach ($pacientes as $paciente): ?>
+                                <option value="<?php echo (int) $paciente['id']; ?>" <?php echo (int) $consulta['id_paciente'] === (int) $paciente['id'] ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($paciente['nome_completo']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
 

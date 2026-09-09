@@ -41,6 +41,9 @@
                 <small class="role"><?php echo htmlspecialchars($perfilUsuario ?? 'Admin'); ?></small>
             </div>
         </div>
-        <a href="actions/auth.php?action=logout" class="logout-btn">Sair</a>
+        <form action="actions/auth.php?action=logout" method="post" class="logout-form">
+            <?php echo Csrf::field(); ?>
+            <button type="submit" class="logout-btn">Sair</button>
+        </form>
     </div>
 </aside>

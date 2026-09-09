@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS consultas (
     sala VARCHAR(20),
     motivo TEXT,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_medico) REFERENCES medicos(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_paciente) REFERENCES pacientes(id) ON DELETE CASCADE
+    FOREIGN KEY (id_medico) REFERENCES medicos(id) ON DELETE RESTRICT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id) ON DELETE RESTRICT
 );
 
 -- Tabela de Pagamentos
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS pagamentos (
     forma_pagamento VARCHAR(50) NOT NULL, -- Ex: pix, cartao, dinheiro
     status ENUM('pago', 'pendente', 'cancelado') DEFAULT 'pendente',
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_consulta) REFERENCES consultas(id) ON DELETE CASCADE
+    FOREIGN KEY (id_consulta) REFERENCES consultas(id) ON DELETE RESTRICT
 );
 
 -- Tabela de Receitas
@@ -75,8 +75,8 @@ CREATE TABLE IF NOT EXISTS receitas (
     data_emissao DATE NOT NULL,
     validade DATE NOT NULL,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_consulta) REFERENCES consultas(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_paciente) REFERENCES pacientes(id) ON DELETE CASCADE
+    FOREIGN KEY (id_consulta) REFERENCES consultas(id) ON DELETE RESTRICT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id) ON DELETE RESTRICT
 );
 
 -- --------------------------------------------------------

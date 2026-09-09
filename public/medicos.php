@@ -25,9 +25,11 @@ include 'partials/_sidebar.php';
                 <h2>Lista de Médicos</h2>
                 <p>Total de <?php echo $totalMedicos; ?> médicos registrados</p>
             </div>
+            <?php if ($isAdmin): ?>
             <a href="cadastroMedico.php" class="btn-primary new-item-btn">
                 <i class="fas fa-user-plus"></i> Novo Médico
             </a>
+            <?php endif; ?>
         </div>
         
         <div class="filter-bar">
@@ -63,8 +65,12 @@ include 'partials/_sidebar.php';
                                     <td><?php echo htmlspecialchars($medico['telefone']); ?></td>
                                     <td><span class="status-badge <?php echo $medico['status']; ?>"><?php echo htmlspecialchars($medico['status']); ?></span></td>
                                     <td class="actions">
+                                        <?php if ($isAdmin): ?>
                                         <a href="atualizarMedico.php?id=<?php echo $medico['id']; ?>" class="action-icon edit-icon" title="Editar"><i class="fas fa-pencil-alt"></i></a>
                                         <a href="deletarMedico.php?id=<?php echo $medico['id']; ?>" class="action-icon delete-consult-icon" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                                        <?php else: ?>
+                                        <span class="secondary-color">Somente leitura</span>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

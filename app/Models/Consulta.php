@@ -63,7 +63,9 @@ class Consulta {
             throw new Exception("Não foi possível conectar ao banco de dados.");
         }
          $sql = "SELECT 
-                    c.id, 
+                    c.id,
+                    c.id_medico,
+                    c.id_paciente,
                     p.nome_completo as paciente_nome, 
                     m.nome_completo as medico_nome, 
                     c.inicio, 

@@ -62,7 +62,9 @@ include 'partials/_sidebar.php';
                                     <td><?php echo htmlspecialchars($paciente['telefone']); ?></td>
                                     <td class="actions">
                                         <a href="atualizarPaciente.php?id=<?php echo $paciente['id']; ?>" class="action-icon info-icon" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                        <?php if ($isAdmin): ?>
                                         <a href="deletarPaciente.php?id=<?php echo $paciente['id']; ?>" class="action-icon delete-consult-icon" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

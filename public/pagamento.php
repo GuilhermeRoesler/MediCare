@@ -98,7 +98,9 @@ include 'partials/_sidebar.php';
                                     <td><span class="status-badge <?php echo htmlspecialchars($pagamento['status']); ?>"><?php echo htmlspecialchars($pagamento['status']); ?></span></td>
                                     <td class="actions">
                                         <a href="atualizarPagamento.php?id=<?php echo $pagamento['id']; ?>" class="action-icon edit-icon" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                        <?php if ($isAdmin): ?>
                                         <a href="deletarPagamento.php?id=<?php echo $pagamento['id']; ?>" class="action-icon delete-consult-icon" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
