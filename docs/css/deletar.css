@@ -3,12 +3,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Inter", sans-serif;
+    font-family: "Manrope", system-ui, sans-serif;
 }
 
 body {
     height: 100vh;
-    background: #eef4ff; /* Fundo mais suave */
+    background: #eef4f2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,7 +49,7 @@ body:has(.app-container) {
     border-radius: 18px;
     box-shadow: 0 8px 35px rgba(0, 0, 0, 0.1);
     text-align: center;
-    border: 2px solid #1d4ed8;
+    border: 2px solid #0f766e;
 }
 
 /* ===== Header ===== */
@@ -66,7 +66,7 @@ body:has(.app-container) {
 
 .auth-header h1 {
     font-size: 1.6rem;
-    color: #1d4ed8;
+    color: #0f766e;
     font-weight: 700;
     margin-bottom: 0.35rem;
 }
@@ -100,7 +100,7 @@ input {
 }
 
 input:focus {
-    border-color: #1d4ed8;
+    border-color: #0f766e;
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
 }
 
@@ -120,12 +120,12 @@ input:focus {
 
 /* Botão excluir (principal) */
 .submit-btn {
-    background: #1d4ed8;
+    background: #0f766e;
     color: #fff;
 }
 
 .submit-btn:hover {
-    background: #1d4ed8;
+    background: #0f766e;
 }
 
 /* Botão cancelar (secundário) */

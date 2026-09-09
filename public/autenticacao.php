@@ -23,7 +23,7 @@ $modo = ($erro === '2' || $erro === '3') ? 'register' : 'login';
     <title>MediCare System - Autenticação</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/autenticacao.css" />
 </head>
 <body>
@@ -36,8 +36,8 @@ $modo = ($erro === '2' || $erro === '3') ? 'register' : 'login';
                               d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                 </div>
-                <h1>MediCare System</h1>
-                <p>Sistema de Gerenciamento de Consultas Médicas</p>
+                <h1 class="brand-name">MediCare</h1>
+                <p>Gestão de consultas, pacientes e equipe clínica</p>
             </div>
 
             <?php if ($mensagemErro): ?>

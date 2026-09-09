@@ -212,7 +212,7 @@ include 'partials/_sidebar.php';
 
         new Chart(document.getElementById('especialidadeChart'), {
             type: 'pie',
-            data: { labels: <?php echo json_encode($relatorio3_labels); ?>, datasets: [{ data: <?php echo json_encode($relatorio3_data); ?>, backgroundColor: ['#2563eb', '#10b981', '#ef4444', '#f59e0b', '#6b7280'] }] },
+            data: { labels: <?php echo json_encode($relatorio3_labels); ?>, datasets: [{ data: <?php echo json_encode($relatorio3_data); ?>, backgroundColor: ['#0f766e', '#10b981', '#ef4444', '#f59e0b', '#6b7280'] }] },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } } }
         });
 

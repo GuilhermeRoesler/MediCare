@@ -41,7 +41,7 @@ Para a demo **completa** (login real, banco, CRUD), use Docker local ou um VPS c
 - **Backend:** PHP 8.1+ (OOP), PDO/MySQL
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 - **Infra:** Docker Compose, GitHub Actions (lint + PHPUnit + Pages)
-- **Libs UI:** Font Awesome, Chart.js, Inter (Google Fonts)
+- **Libs UI:** Font Awesome, Chart.js, Manrope + Fraunces (Google Fonts)
 
 ## Arquitetura
 

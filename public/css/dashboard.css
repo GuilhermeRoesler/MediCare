@@ -13,97 +13,143 @@
 
 .stat-card {
     background-color: var(--card-bg);
-    padding: 20px;
-    border-radius: 8px;
+    padding: 22px;
+    border-radius: var(--radius-md, 12px);
     box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(215, 227, 223, 0.8);
     display: flex;
     flex-direction: column;
     position: relative;
-    border-left: 5px solid var(--border-color); /* Borda lateral sutil */
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--border-color);
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
 }
 
 .stat-card .card-icon {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 2rem;
-    opacity: 0.2;
+    top: 18px;
+    right: 18px;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    opacity: 1;
+}
+
+.stat-card .card-icon.blue {
+    color: var(--primary-color);
+    background: var(--primary-soft);
+}
+.stat-card .card-icon.green {
+    color: var(--success-color);
+    background: var(--success-soft);
+}
+.stat-card .card-icon.red {
+    color: #be123c;
+    background: #ffe4e6;
+}
+.stat-card .card-icon.yellow {
+    color: var(--pending-color);
+    background: var(--pending-soft);
 }
 
 .stat-card h4 {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--secondary-color);
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    padding-right: 48px;
 }
 
 .stat-value {
-    font-size: 2rem;
+    font-family: var(--font-display);
+    font-size: 2.1rem;
     font-weight: 700;
     margin-bottom: 10px;
     color: var(--text-primary);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
 }
 
 .stat-comparison {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 500;
 }
 
 .stat-comparison.success { color: var(--success-color); }
 .stat-comparison.neutral { color: var(--secondary-color); }
-/* Adicione .error se precisar de comparação negativa (vermelho) */
 
-/* Cores das Bordas Laterais do Stat Card */
-.stat-card:nth-child(1) { border-left-color: var(--primary-color); }
-.stat-card:nth-child(2) { border-left-color: var(--success-color); }
-.stat-card:nth-child(3) { border-left-color: var(--error-color); }
-.stat-card:nth-child(4) { border-left-color: var(--pending-color); }
+.stat-card:nth-child(1)::before { background: var(--primary-color); }
+.stat-card:nth-child(2)::before { background: var(--success-color); }
+.stat-card:nth-child(3)::before { background: #e11d48; }
+.stat-card:nth-child(4)::before { background: var(--pending-color); }
 
 
 /* -------------------- GRÁFICOS E RANKING -------------------- */
 .charts-and-ranking-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* 2 colunas: 66% e 33% */
-    grid-template-rows: auto auto; /* Duas linhas */
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto auto;
     gap: 20px;
 }
 
-/* Card de Gráfico Básico */
 .chart-card {
     background-color: var(--card-bg);
     padding: 25px;
-    border-radius: 8px;
+    border-radius: var(--radius-md, 12px);
     box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(215, 227, 223, 0.8);
 }
 
 .charts-and-ranking-grid > .chart-card:first-child {
-    grid-column: 1 / 2; /* O primeiro gráfico fica na primeira coluna */
+    grid-column: 1 / 2;
 }
 
 .chart-card h4 {
-    font-size: 1.2rem;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--border-color);
+    letter-spacing: -0.01em;
 }
 
 .chart-area {
     position: relative;
-    height: 250px;
+    height: 260px;
 }
 
-/* Ranking Card (Médicos Mais Ativos) */
 .ranking-card {
     background-color: var(--card-bg);
     padding: 25px;
-    border-radius: 8px;
+    border-radius: var(--radius-md, 12px);
     box-shadow: var(--shadow-sm);
-    grid-column: 2 / 3; /* Ranking fica na segunda coluna */
+    border: 1px solid rgba(215, 227, 223, 0.8);
+    grid-column: 2 / 3;
 }
 
 .ranking-card h4 {
-    font-size: 1.2rem;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 15px;
@@ -111,6 +157,7 @@
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
+    letter-spacing: -0.01em;
 }
 
 .ranking-card h4 i {
@@ -121,20 +168,26 @@
 .ranking-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 8px;
 }
 
 .ranking-item {
     display: flex;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #f9fafb;
+    padding: 12px 10px;
+    border-radius: 10px;
+    border-bottom: none;
+    transition: background-color 0.15s ease;
+}
+
+.ranking-item:hover {
+    background-color: var(--primary-light);
 }
 
 .rank-badge {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -144,8 +197,8 @@
     color: white;
 }
 
-.rank-badge.gold { background-color: #fcd34d; }
-.rank-badge.silver { background-color: #9ca3af; }
+.rank-badge.gold { background-color: #d97706; }
+.rank-badge.silver { background-color: #6b7280; }
 .rank-badge.bronze { background-color: #b45309; }
 
 .doctor-details {
@@ -183,17 +236,18 @@
 
 /* Next Appointments Card */
 .next-appointments-card {
-    /* Ocupa a segunda linha da primeira coluna do grid */
     grid-row: 2 / 3;
     grid-column: 1 / 2;
     background-color: var(--card-bg);
     padding: 25px;
-    border-radius: 8px;
+    border-radius: var(--radius-md, 12px);
     box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(215, 227, 223, 0.8);
 }
 
 .next-appointments-card h4 {
-    font-size: 1.2rem;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 15px;
@@ -201,6 +255,7 @@
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
+    letter-spacing: -0.01em;
 }
 
 .next-appointments-card h4 i {
@@ -216,8 +271,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #f9fafb;
+    padding: 12px 8px;
+    border-radius: 10px;
+    border-bottom: none;
+    transition: background-color 0.15s ease;
+}
+
+.appointment-item:hover {
+    background-color: var(--primary-light);
 }
 
 .appointment-item strong {
@@ -238,18 +299,26 @@
     line-height: 1.2;
     padding: 5px 10px;
     font-size: 0.7rem;
-    border-radius: 4px;
+    border-radius: 6px;
 }
 
-.appointment-item .status-badge.confirmed { background-color: var(--success-color); color: white; }
-.appointment-item .status-badge.scheduled { background-color: var(--primary-light); color: var(--primary-color); }
+.appointment-item .status-badge.confirmed {
+    background-color: var(--success-soft);
+    color: #065f46;
+}
+.appointment-item .status-badge.scheduled {
+    background-color: var(--primary-soft);
+    color: var(--primary-deep);
+}
 
 /* Quick Actions Section */
 .quick-actions-section h3 {
-    font-size: 1.2rem;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 15px;
+    letter-spacing: -0.01em;
 }
 
 .quick-actions-section h3 i {
@@ -268,33 +337,54 @@
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
     padding: 12px 10px;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.15s ease;
     font-weight: 600;
+    border-radius: var(--radius-sm, 8px);
 }
 
 .action-btn:hover {
     background-color: var(--primary-light);
+    transform: translateY(-1px);
 }
 
 .action-btn.full-row {
     grid-column: span 2;
     background-color: var(--primary-color);
     color: var(--card-bg);
+    border-color: var(--primary-color);
 }
 
 .action-btn.full-row:hover {
-    background-color: #1d4ed8;
+    background-color: var(--primary-hover);
 }
 
-/* Ajuste de layout de gráficos para telas menores */
+.btn-primary.full-width {
+    width: 100%;
+    justify-content: center;
+}
+
 @media (max-width: 1200px) {
     .charts-and-ranking-grid {
-        grid-template-columns: 1fr; /* Uma única coluna */
+        grid-template-columns: 1fr;
     }
     .charts-and-ranking-grid > .chart-card:first-child,
     .ranking-card,
     .next-appointments-card {
         grid-column: 1 / -1;
         grid-row: auto;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .action-btn.full-row {
+        grid-column: span 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
     }
 }

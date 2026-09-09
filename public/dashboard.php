@@ -193,8 +193,8 @@ include 'partials/_sidebar.php';
                 datasets: [{
                     label: 'Nº de Consultas',
                     data: <?php echo $chart1_data; ?>,
-                    backgroundColor: 'rgba(37, 99, 235, 0.8)',
-                    borderColor: 'rgba(37, 99, 235, 1)',
+                    backgroundColor: 'rgba(15, 118, 110, 0.85)',
+                    borderColor: 'rgba(15, 118, 110, 1)',
                     borderWidth: 1,
                     borderRadius: 4
                 }]
