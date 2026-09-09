@@ -16,7 +16,7 @@
     padding: 22px;
     border-radius: var(--radius-md, 12px);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(215, 227, 223, 0.8);
+    border: 1px solid rgba(221, 225, 239, 0.8);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -115,7 +115,7 @@
     padding: 25px;
     border-radius: var(--radius-md, 12px);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(215, 227, 223, 0.8);
+    border: 1px solid rgba(221, 225, 239, 0.8);
 }
 
 .charts-and-ranking-grid > .chart-card:first-child {
@@ -143,7 +143,7 @@
     padding: 25px;
     border-radius: var(--radius-md, 12px);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(215, 227, 223, 0.8);
+    border: 1px solid rgba(221, 225, 239, 0.8);
     grid-column: 2 / 3;
 }
 
@@ -242,7 +242,7 @@
     padding: 25px;
     border-radius: var(--radius-md, 12px);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(215, 227, 223, 0.8);
+    border: 1px solid rgba(221, 225, 239, 0.8);
 }
 
 .next-appointments-card h4 {

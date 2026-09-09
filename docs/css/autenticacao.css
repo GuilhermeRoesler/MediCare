@@ -1,12 +1,12 @@
 /* ===== Auth — MediCare refresh ===== */
 :root {
-    --auth-primary: #0f766e;
-    --auth-primary-hover: #0d9488;
-    --auth-primary-deep: #115e59;
-    --auth-soft: #ccfbf1;
-    --auth-text: #14241f;
-    --auth-muted: #5b6b66;
-    --auth-border: #d7e3df;
+    --auth-primary: #3b5bdb;
+    --auth-primary-hover: #4c6ef5;
+    --auth-primary-deep: #364fc7;
+    --auth-soft: #dbe4ff;
+    --auth-text: #172554;
+    --auth-muted: #64748b;
+    --auth-border: #d7deeb;
     --font-sans: "Manrope", system-ui, sans-serif;
     --font-display: "Fraunces", Georgia, serif;
 }
@@ -24,9 +24,9 @@ body {
     position: relative;
     overflow-x: hidden;
     background:
-        radial-gradient(ellipse 90% 70% at 10% 20%, rgba(13, 148, 136, 0.22), transparent 50%),
-        radial-gradient(ellipse 70% 60% at 90% 80%, rgba(15, 118, 110, 0.18), transparent 45%),
-        linear-gradient(160deg, #e8f5f2 0%, #f4faf8 45%, #eef2f6 100%);
+        radial-gradient(ellipse 90% 70% at 10% 20%, rgba(76, 110, 245, 0.22), transparent 50%),
+        radial-gradient(ellipse 70% 60% at 90% 80%, rgba(59, 91, 219, 0.18), transparent 45%),
+        linear-gradient(160deg, #e7ecff 0%, #f3f6fb 45%, #eef2f6 100%);
 }
 
 body::before {
@@ -36,8 +36,8 @@ body::before {
     pointer-events: none;
     opacity: 0.35;
     background-image:
-        linear-gradient(rgba(15, 118, 110, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15, 118, 110, 0.04) 1px, transparent 1px);
+        linear-gradient(rgba(59, 91, 219, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 91, 219, 0.04) 1px, transparent 1px);
     background-size: 48px 48px;
     mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
 }
@@ -50,7 +50,7 @@ body::after {
     border-radius: 50%;
     right: -120px;
     top: -80px;
-    background: radial-gradient(circle, rgba(15, 118, 110, 0.12), transparent 70%);
+    background: radial-gradient(circle, rgba(59, 91, 219, 0.12), transparent 70%);
     pointer-events: none;
     animation: drift 14s ease-in-out infinite alternate;
 }
@@ -90,8 +90,8 @@ body::after {
     max-width: 420px;
     padding: 2.5rem;
     border-radius: 18px;
-    border: 1px solid rgba(215, 227, 223, 0.9);
-    box-shadow: 0 16px 40px rgba(20, 36, 31, 0.08);
+    border: 1px solid rgba(221, 225, 239, 0.9);
+    box-shadow: 0 16px 40px rgba(23, 37, 84, 0.08);
     text-align: center;
     animation: fadeUp 0.55s ease both;
 }
@@ -106,7 +106,7 @@ body::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 20px rgba(15, 118, 110, 0.25);
+    box-shadow: 0 8px 20px rgba(59, 91, 219, 0.25);
     animation: fadeUp 0.6s ease 0.08s both;
 }
 
@@ -121,7 +121,7 @@ body::after {
     font-family: var(--font-display);
     font-size: 1.95rem;
     font-weight: 700;
-    color: #0f1f1b;
+    color: #172554;
     letter-spacing: -0.03em;
     line-height: 1.15;
     animation: fadeUp 0.6s ease 0.12s both;
@@ -137,7 +137,7 @@ body::after {
 /* ===== Tabs ===== */
 .tab-container {
     display: flex;
-    background: #eef4f2;
+    background: #eef2f7;
     border-radius: 10px;
     margin: 1.6rem 0;
     overflow: hidden;
@@ -161,7 +161,7 @@ body::after {
 .tab.active {
     background: #fff;
     color: var(--auth-primary);
-    box-shadow: 0 1px 3px rgba(20, 36, 31, 0.08);
+    box-shadow: 0 1px 3px rgba(23, 37, 84, 0.08);
 }
 
 /* ===== Form ===== */
@@ -198,7 +198,7 @@ input {
 input:focus {
     outline: none;
     border-color: var(--auth-primary);
-    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.16);
+    box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.16);
 }
 
 /* ===== Button ===== */

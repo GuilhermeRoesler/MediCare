@@ -1,29 +1,29 @@
 /* Variáveis de Cores — MediCare refresh */
 :root {
-    --primary-color: #0f766e;
-    --primary-hover: #0d9488;
-    --primary-deep: #115e59;
-    --primary-light: #f0fdfa;
-    --primary-soft: #ccfbf1;
-    --secondary-color: #5b6b66;
-    --background-color: #eef4f2;
-    --background-accent: #e2eeea;
+    --primary-color: #3b5bdb;
+    --primary-hover: #4c6ef5;
+    --primary-deep: #364fc7;
+    --primary-light: #edf2ff;
+    --primary-soft: #dbe4ff;
+    --secondary-color: #64748b;
+    --background-color: #eef2f7;
+    --background-accent: #e2e8f4;
     --card-bg: #ffffff;
-    --border-color: #d7e3df;
+    --border-color: #d7deeb;
     --success-color: #059669;
     --success-soft: #d1fae5;
     --error-color: #dc2626;
     --error-soft: #fee2e2;
     --pending-color: #d97706;
     --pending-soft: #fef3c7;
-    --text-primary: #14241f;
+    --text-primary: #172554;
     --font-sans: "Manrope", system-ui, sans-serif;
     --font-display: "Fraunces", Georgia, serif;
     --radius-sm: 8px;
     --radius-md: 12px;
-    --shadow-sm: 0 1px 2px rgba(20, 36, 31, 0.05);
-    --shadow-md: 0 8px 24px rgba(20, 36, 31, 0.06);
-    --focus-ring: 0 0 0 3px rgba(15, 118, 110, 0.18);
+    --shadow-sm: 0 1px 2px rgba(23, 37, 84, 0.05);
+    --shadow-md: 0 8px 24px rgba(23, 37, 84, 0.06);
+    --focus-ring: 0 0 0 3px rgba(59, 91, 219, 0.18);
 }
 
 /* Reset Básico */
@@ -37,8 +37,8 @@ body {
     font-family: var(--font-sans);
     background-color: var(--background-color);
     background-image:
-        radial-gradient(ellipse 80% 50% at 0% -10%, rgba(15, 118, 110, 0.08), transparent 55%),
-        radial-gradient(ellipse 60% 40% at 100% 0%, rgba(13, 148, 136, 0.06), transparent 50%);
+        radial-gradient(ellipse 80% 50% at 0% -10%, rgba(59, 91, 219, 0.08), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, rgba(76, 110, 245, 0.06), transparent 50%);
     background-attachment: fixed;
     color: var(--text-primary);
     line-height: 1.5;
@@ -257,7 +257,7 @@ a {
     padding: 20px 25px;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(215, 227, 223, 0.8);
+    border: 1px solid rgba(221, 225, 239, 0.8);
 }
 
 .header-text h1 {
@@ -330,7 +330,7 @@ a {
     padding: 25px;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(215, 227, 223, 0.8);
+    border: 1px solid rgba(221, 225, 239, 0.8);
 }
 
 .management-header {
@@ -393,7 +393,7 @@ a {
     font-size: 0.9rem;
     font-family: var(--font-sans);
     background-color: #fff;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%235b6b66' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: 0.85rem center;
     background-size: 1rem;
@@ -415,7 +415,7 @@ a {
 }
 
 .data-table thead th {
-    background-color: #f4f9f7;
+    background-color: #f3f6fb;
     color: var(--secondary-color);
     font-weight: 600;
     text-align: left;
@@ -525,7 +525,7 @@ a {
     padding: 20px;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(215, 227, 223, 0.8);
+    border: 1px solid rgba(221, 225, 239, 0.8);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -584,7 +584,7 @@ a {
         display: block;
         position: fixed;
         inset: 0;
-        background: rgba(20, 36, 31, 0.45);
+        background: rgba(23, 37, 84, 0.45);
         z-index: 999;
     }
 
