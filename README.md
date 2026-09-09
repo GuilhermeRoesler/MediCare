@@ -2,7 +2,7 @@
 
 Sistema web de gerenciamento de clínicas médicas: pacientes, médicos, consultas, pagamentos, receitas, dashboard e relatórios.
 
-![Dashboard MediCare](images/dashboard.png)
+![Dashboard MediCare](docs/screenshots/demo.webp)
 
 ## Demonstração
 
