@@ -1,0 +1,73 @@
+/* Banner e toasts da demo estática (GitHub Pages) */
+.demo-banner {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem 1.25rem;
+    padding: 0.65rem 1rem;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.demo-banner strong {
+    color: #fff;
+}
+
+.demo-banner a {
+    color: #93c5fd;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.demo-banner a:hover {
+    color: #bfdbfe;
+}
+
+.demo-toast {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1100;
+    max-width: min(360px, calc(100vw - 2rem));
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    background: #1e293b;
+    color: #f8fafc;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.demo-toast.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.auth-demo-note {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #1e3a8a;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.auth-container {
+    padding-top: 3.5rem;
+}
+
+.status-badge.confirmada {
+    background-color: #d1fae5;
+    color: #065f46;
+}

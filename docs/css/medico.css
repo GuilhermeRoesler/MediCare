@@ -1,0 +1,27 @@
+/*
+ * Arquivo: medicos.css
+ * Descrição: Estilos específicos para a página de Gerenciamento de Médicos.
+ * * NOTA: Este arquivo deve ser importado APÓS o gerenciamento.css.
+ */
+
+/* Cores para Badges de Status do Médico */
+
+.status-badge.ativo {
+    background-color: var(--success-color); /* Verde */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 9999px; /* Pill shape */
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.inativo {
+    background-color: var(--secondary-color); /* Cinza */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 9999px; /* Pill shape */
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}

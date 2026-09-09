@@ -9,11 +9,22 @@ Sistema web de gerenciamento de clínicas médicas: pacientes, médicos, consult
 | Item | Valor |
 |------|--------|
 | **Repositório** | https://github.com/GuilhermeRoesler/MediCare |
-| **Demo local (Docker)** | http://localhost:8080 |
+| **Demo estática (GitHub Pages)** | https://guilhermeroesler.github.io/MediCare/ |
+| **Demo completa (Docker local)** | http://localhost:8080 |
 | **Admin** | `admin@medicare.com` / `123456` |
 | **Recepção** | `recepcao@medicare.com` / `123456` |
 
-> Para publicar uma demo online, faça o deploy com Docker em Railway, Render ou qualquer VPS com PHP 8.2 + MySQL e atualize este README com a URL pública.
+### Demo no GitHub Pages
+
+A pasta `docs/` contém uma **vitrine estática** (HTML/CSS/JS) com o visual do sistema e dados mock do seed. Funciona no GitHub Pages porque **não executa PHP**.
+
+- Login simulado → abre o dashboard
+- Navegação, busca/ordenação nas tabelas e gráficos Chart.js
+- CRUD, filtros de relatório e export CSV **desabilitados** (toast de “somente leitura”)
+
+O workflow `.github/workflows/pages.yml` publica `docs/` automaticamente. No GitHub: **Settings → Pages → Source: GitHub Actions**.
+
+Para a demo **completa** (login real, banco, CRUD), use Docker local ou um VPS com PHP 8.2 + MySQL.
 
 ## Funcionalidades
 
@@ -29,7 +40,7 @@ Sistema web de gerenciamento de clínicas médicas: pacientes, médicos, consult
 
 - **Backend:** PHP 8.1+ (OOP), PDO/MySQL
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
-- **Infra:** Docker Compose, GitHub Actions (lint + PHPUnit)
+- **Infra:** Docker Compose, GitHub Actions (lint + PHPUnit + Pages)
 - **Libs UI:** Font Awesome, Chart.js, Inter (Google Fonts)
 
 ## Arquitetura
@@ -87,7 +98,7 @@ composer install
 composer test
 ```
 
-O workflow em `.github/workflows/ci.yml` valida sintaxe PHP e executa o PHPUnit em push/PR.
+O workflow em `.github/workflows/ci.yml` valida sintaxe PHP e executa o PHPUnit em push/PR. O workflow `pages.yml` publica a demo estática de `docs/`.
 
 ## Segurança (destaques)
 
@@ -105,12 +116,12 @@ O workflow em `.github/workflows/ci.yml` valida sintaxe PHP e executa o PHPUnit 
 │   ├── Core/
 │   ├── Http/Controllers/
 │   └── Models/
-├── public/
-│   ├── actions/
+├── public/               # App PHP (document root)
+├── docs/                 # Demo estática (GitHub Pages)
+│   ├── index.html
+│   ├── dashboard.html
 │   ├── css/
-│   ├── js/
-│   ├── partials/
-│   └── *.php
+│   └── js/
 ├── tests/
 ├── database.sql
 ├── docker-compose.yml

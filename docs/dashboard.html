@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/gerenciamento.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/table-enhancer.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="js/demo.js" defer></script>
+</head>
+<body>
+    <div class="demo-banner" role="status">
+        <strong>Demo estática</strong>
+        <span>Dados fixos do seed — CRUD desabilitado.</span>
+        <a href="index.html">Voltar ao login</a>
+        <a href="https://github.com/GuilhermeRoesler/MediCare">Código-fonte</a>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <div class="app-container">
+<aside class="sidebar" id="sidebar" aria-label="Navegação principal">
+    <div class="logo-section">
+        <a href="dashboard.html" class="logo-text-link">
+            <i class="fas fa-notes-medical logo-icon" aria-hidden="true"></i>
+            <div class="logo-text"><span>MediCare</span><small>Sistema Médico</small></div>
+        </a>
+        <button type="button" class="sidebar-close" id="sidebarClose" aria-label="Fechar menu">
+            <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li class="nav-item active"><a href="dashboard.html"><i class="fas fa-tachometer-alt" aria-hidden="true"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="pacientes.html"><i class="fas fa-user-injured" aria-hidden="true"></i> Pacientes</a></li>
+            <li class="nav-item"><a href="medicos.html"><i class="fas fa-user-md" aria-hidden="true"></i> Médicos</a></li>
+            <li class="nav-item"><a href="consulta.html"><i class="fas fa-calendar-check" aria-hidden="true"></i> Consultas</a></li>
+            <li class="nav-item"><a href="pagamento.html"><i class="fas fa-file-invoice-dollar" aria-hidden="true"></i> Pagamentos</a></li>
+            <li class="nav-item"><a href="receitas.html"><i class="fas fa-file-prescription" aria-hidden="true"></i> Receitas</a></li>
+            <li class="nav-item"><a href="relatorios.html"><i class="fas fa-chart-line" aria-hidden="true"></i> Relatórios</a></li>
+        </ul>
+    </nav>
+    <div class="user-footer">
+        <div class="user-info">
+            <div class="user-avatar">A</div>
+            <div>
+                <span class="username">Administrador</span>
+                <small class="role">admin</small>
+            </div>
+        </div>
+        <a href="index.html" class="logout-btn">Sair</a>
+    </div>
+</aside>
+<main class="main-content">
+    <header class="page-header">
+        <div class="header-left">
+            <button type="button" class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+            <div class="header-text">
+                <h1>Painel Administrativo</h1>
+                <p>Gerencie consultas, pacientes e médicos</p>
+            </div>
+        </div>
+        <div class="header-profile">
+            <div class="profile-details">
+                <div class="profile-avatar">A</div>
+                <div class="profile-info">
+                    <span>Administrador</span>
+                    <small>admin</small>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="stat-cards-grid">
+        <div class="stat-card">
+            <div class="card-icon blue"><i class="fas fa-user-injured"></i></div>
+            <h4>Total de Pacientes</h4>
+            <span class="stat-value">5</span>
+            <p class="stat-comparison success">Registrados no sistema</p>
+        </div>
+        <div class="stat-card">
+            <div class="card-icon green"><i class="fas fa-user-md"></i></div>
+            <h4>Médicos Ativos</h4>
+            <span class="stat-value">4</span>
+            <p class="stat-comparison success">Prontos para atender</p>
+        </div>
+        <div class="stat-card">
+            <div class="card-icon red"><i class="fas fa-calendar-alt"></i></div>
+            <h4>Consultas (30 dias)</h4>
+            <span class="stat-value">5</span>
+            <p class="stat-comparison neutral">Realizadas no último mês</p>
+        </div>
+        <div class="stat-card">
+            <div class="card-icon yellow"><i class="fas fa-file-invoice-dollar"></i></div>
+            <h4>Faturamento</h4>
+            <span class="stat-value">R$ 850,00</span>
+            <p class="stat-comparison success">Total de pagamentos recebidos</p>
+        </div>
+    </section>
+
+    <section class="charts-and-ranking-grid">
+        <div class="chart-card">
+            <h4>Consultas por Mês</h4>
+            <div class="chart-area">
+                <canvas id="consultasMesChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h4>Consultas por Status</h4>
+            <div class="chart-area">
+                <canvas id="consultasStatusChart"></canvas>
+            </div>
+        </div>
+
+        <div class="ranking-card">
+            <h4><i class="fas fa-medal"></i> Médicos Mais Ativos (30 dias)</h4>
+            <div class="ranking-list">
+                <div class="ranking-item">
+                    <div class="rank-badge gold">1</div>
+                    <div class="doctor-details">
+                        <strong>Dr. Roberto Silva</strong>
+                        <small>Cardiologia</small>
+                    </div>
+                    <div class="consult-count"><span>2 consultas</span></div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank-badge silver">2</div>
+                    <div class="doctor-details">
+                        <strong>Dra. Ana Souza</strong>
+                        <small>Pediatria</small>
+                    </div>
+                    <div class="consult-count"><span>1 consulta</span></div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank-badge bronze">3</div>
+                    <div class="doctor-details">
+                        <strong>Dr. Carlos Mendes</strong>
+                        <small>Ortopedia</small>
+                    </div>
+                    <div class="consult-count"><span>1 consulta</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="next-appointments-card">
+            <h4><i class="far fa-calendar-alt"></i> Próximas Consultas</h4>
+            <div class="appointments-list">
+                <div class="appointment-item">
+                    <div>
+                        <strong>Marcos Costa</strong>
+                        <small>Dra. Fernanda Lima</small>
+                        <small>09/09/2026 - 10:00</small>
+                    </div>
+                    <div class="status-badge confirmed">104<br>confirmada</div>
+                </div>
+                <div class="appointment-item">
+                    <div>
+                        <strong>José Santos</strong>
+                        <small>Dr. Roberto Silva</small>
+                        <small>11/09/2026 - 14:00</small>
+                    </div>
+                    <div class="status-badge scheduled">101<br>agendada</div>
+                </div>
+                <div class="appointment-item">
+                    <div>
+                        <strong>Pedro Alves</strong>
+                        <small>Dra. Ana Souza</small>
+                        <small>13/09/2026 - 09:30</small>
+                    </div>
+                    <div class="status-badge scheduled">102<br>agendada</div>
+                </div>
+            </div>
+            <a href="consulta.html" class="btn-primary full-width">Ver Todas as Consultas</a>
+        </div>
+    </section>
+
+    <section class="quick-actions-section">
+        <h3><i class="fas fa-bolt"></i> Ações Rápidas</h3>
+        <div class="quick-actions-grid">
+            <a href="#" class="action-btn full-row" data-demo-readonly>Novo Paciente</a>
+            <a href="#" class="action-btn full-row" data-demo-readonly>Novo Médico</a>
+            <a href="#" class="action-btn full-row" data-demo-readonly>Nova Consulta</a>
+            <a href="#" class="action-btn full-row" data-demo-readonly>Nova Receita</a>
+            <a href="#" class="action-btn full-row" data-demo-readonly>Novo Pagamento</a>
+            <a href="relatorios.html" class="action-btn full-row">Ver Relatórios</a>
+        </div>
+    </section>
+
+    <script>
+        new Chart(document.getElementById('consultasMesChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set'],
+                datasets: [{
+                    label: 'Nº de Consultas',
+                    data: [0, 0, 0, 1, 2, 4],
+                    backgroundColor: 'rgba(37, 99, 235, 0.8)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        new Chart(document.getElementById('consultasStatusChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Finalizada', 'Confirmada', 'Agendada'],
+                datasets: [{
+                    label: 'Status',
+                    data: [4, 1, 2],
+                    backgroundColor: ['rgba(107, 114, 128, 0.8)', 'rgba(16, 185, 129, 0.8)', 'rgba(245, 158, 11, 0.8)'],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'top' } }
+            }
+        });
+    </script>
+</main>
+    </div>
+</body>
+</html>

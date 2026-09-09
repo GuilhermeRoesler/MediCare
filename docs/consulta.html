@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Consultas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/gerenciamento.css">
+    <link rel="stylesheet" href="css/consulta.css">
+    <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="js/table-enhancer.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="js/demo.js" defer></script>
+</head>
+<body>
+    <div class="demo-banner" role="status">
+        <strong>Demo estática</strong>
+        <span>Agendamento real exige PHP + MySQL.</span>
+        <a href="index.html">Voltar ao login</a>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    <div class="app-container">
+<aside class="sidebar" id="sidebar" aria-label="Navegação principal">
+    <div class="logo-section">
+        <a href="dashboard.html" class="logo-text-link">
+            <i class="fas fa-notes-medical logo-icon" aria-hidden="true"></i>
+            <div class="logo-text"><span>MediCare</span><small>Sistema Médico</small></div>
+        </a>
+        <button type="button" class="sidebar-close" id="sidebarClose" aria-label="Fechar menu"><i class="fas fa-times" aria-hidden="true"></i></button>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li class="nav-item"><a href="dashboard.html"><i class="fas fa-tachometer-alt" aria-hidden="true"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="pacientes.html"><i class="fas fa-user-injured" aria-hidden="true"></i> Pacientes</a></li>
+            <li class="nav-item"><a href="medicos.html"><i class="fas fa-user-md" aria-hidden="true"></i> Médicos</a></li>
+            <li class="nav-item active"><a href="consulta.html"><i class="fas fa-calendar-check" aria-hidden="true"></i> Consultas</a></li>
+            <li class="nav-item"><a href="pagamento.html"><i class="fas fa-file-invoice-dollar" aria-hidden="true"></i> Pagamentos</a></li>
+            <li class="nav-item"><a href="receitas.html"><i class="fas fa-file-prescription" aria-hidden="true"></i> Receitas</a></li>
+            <li class="nav-item"><a href="relatorios.html"><i class="fas fa-chart-line" aria-hidden="true"></i> Relatórios</a></li>
+        </ul>
+    </nav>
+    <div class="user-footer">
+        <div class="user-info">
+            <div class="user-avatar">A</div>
+            <div><span class="username">Administrador</span><small class="role">admin</small></div>
+        </div>
+        <a href="index.html" class="logout-btn">Sair</a>
+    </div>
+</aside>
+<main class="main-content">
+    <header class="page-header">
+        <div class="header-left">
+            <button type="button" class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false"><i class="fas fa-bars" aria-hidden="true"></i></button>
+            <div class="header-text">
+                <h1>Painel Administrativo</h1>
+                <p>Agende e gerencie consultas médicas</p>
+            </div>
+        </div>
+        <div class="header-profile">
+            <div class="profile-details">
+                <div class="profile-avatar">A</div>
+                <div class="profile-info"><span>Administrador</span><small>admin</small></div>
+            </div>
+        </div>
+    </header>
+
+    <section class="management-card">
+        <div class="management-header">
+            <div class="title-section">
+                <h2>Gerenciar Consultas</h2>
+                <p>Agende e gerencie consultas médicas</p>
+            </div>
+            <a href="#" class="btn-primary new-item-btn" data-demo-readonly><i class="fas fa-plus"></i> Nova Consulta</a>
+        </div>
+        <div class="filter-bar">
+            <input type="text" class="search-input" placeholder="Buscar por paciente, médico, status...">
+        </div>
+        <div class="data-section">
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>PACIENTE</th>
+                            <th>MÉDICO</th>
+                            <th>DATA/HORA INÍCIO</th>
+                            <th>STATUS</th>
+                            <th>SALA</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td class="main-info">Maria Oliveira</td>
+                            <td>Dr. Roberto Silva</td>
+                            <td>08/07/2026 10:00</td>
+                            <td><span class="status-badge finalizada">finalizada</span></td>
+                            <td>101</td>
+                            <td class="actions">
+                                <a href="#" class="action-icon edit-icon" data-demo-readonly title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="#" class="action-icon delete-consult-icon" data-demo-readonly title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td class="main-info">Pedro Alves</td>
+                            <td>Dra. Ana Souza</td>
+                            <td>08/08/2026 09:00</td>
+                            <td><span class="status-badge finalizada">finalizada</span></td>
+                            <td>102</td>
+                            <td class="actions">
+                                <a href="#" class="action-icon edit-icon" data-demo-readonly title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="#" class="action-icon delete-consult-icon" data-demo-readonly title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td class="main-info">José Santos</td>
+                            <td>Dr. Carlos Mendes</td>
+                            <td>24/08/2026 15:00</td>
+                            <td><span class="status-badge finalizada">finalizada</span></td>
+                            <td>103</td>
+                            <td class="actions">
+                                <a href="#" class="action-icon edit-icon" data-demo-readonly title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="#" class="action-icon delete-consult-icon" data-demo-readonly title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td class="main-info">Lucia Ferreira</td>
+                            <td>Dr. Roberto Silva</td>
+                            <td>03/09/2026 11:00</td>
+                            <td><span class="status-badge finalizada">finalizada</span></td>
+                            <td>101</td>
+                            <td class="actions">
+                                <a href="#" class="action-icon edit-icon" data-demo-readonly title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="#" class="action-icon delete-consult-icon" data-demo-readonly title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td class="main-info">Marcos Costa</td>
+                            <td>Dra. Fernanda Lima</td>
+                            <td>09/09/2026 10:00</td>
+                            <td><span class="status-badge confirmada">confirmada</span></td>
+                            <td>104</td>
+                            <td class="actions">
+                                <a href="#" class="action-icon edit-icon" data-demo-readonly title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="#" class="action-icon delete-consult-icon" data-demo-readonly title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td class="main-info">José Santos</td>
+                            <td>Dr. Roberto Silva</td>
+                            <td>11/09/2026 14:00</td>
+                            <td><span class="status-badge agendada">agendada</span></td>
+                            <td>101</td>
+                            <td class="actions">
+                                <a href="#" class="action-icon edit-icon" data-demo-readonly title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="#" class="action-icon delete-consult-icon" data-demo-readonly title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td class="main-info">Pedro Alves</td>
+                            <td>Dra. Ana Souza</td>
+                            <td>13/09/2026 09:30</td>
+                            <td><span class="status-badge agendada">agendada</span></td>
+                            <td>102</td>
+                            <td class="actions">
+                                <a href="#" class="action-icon edit-icon" data-demo-readonly title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="#" class="action-icon delete-consult-icon" data-demo-readonly title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+    </div>
+</body>
+</html>

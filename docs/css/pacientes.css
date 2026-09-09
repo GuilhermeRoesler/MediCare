@@ -1,0 +1,32 @@
+/*
+ * Arquivo: pacientes.css
+ * Descrição: Estilos específicos para a página de Gerenciamento de Pacientes.
+ * * NOTA: Este arquivo deve ser importado APÓS o gerenciamento.css.
+ */
+
+/* Estilo para ícone de informação na tabela de ações */
+.actions .info-icon {
+    color: var(--primary-color);
+    background-color: #dbeafe; /* Azul bem claro */
+    padding: 8px;
+    border-radius: 4px;
+    margin-right: 5px;
+    transition: background-color 0.2s;
+}
+
+.actions .info-icon:hover {
+    background-color: #93c5fd; /* Azul um pouco mais escuro ao passar o mouse */
+}
+
+/* Garante que o texto principal da coluna de nome se destaque ligeiramente */
+.data-table td.main-info {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* Adicionando um espaço para separar os botões na tabela de ações */
+.data-table td.actions button {
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+}
